@@ -1,0 +1,16 @@
+{
+  "name": "personal_finance_tracker1",
+  "version": "1.0.0",
+  "description": "",
+  "packageManager": "pnpm@10.27.0",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "build:web": "pnpm --filter web build"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}
