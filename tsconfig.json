@@ -7,8 +7,8 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@repo/ui": ["packages/ui/src"],
-      "@repo/types": ["packages/types"]
+      "@repo/utils": ["packages/utils/src"],
+      "@repo/types": ["packages/types/src"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

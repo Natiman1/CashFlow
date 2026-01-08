@@ -1,11 +1,19 @@
-import { Button } from "../components/Button";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+
+import HeroSection from "./sections/hero";
+import FeaturesSection from "./sections/features";
+import HowItWorksSection from "./sections/how-it-works";
+import CtaSection from "./sections/cta";
 export default function Home() {
   return (
-    <div>
-      <h1>Hello world!</h1>
-      <Button text="Primary Button" variant="primary" size="md" />
-      <Button text="Secondary Button" variant="secondary" size="lg" />
-      <Button text="Danger Button" variant="danger" size="sm" fullWidth />
-    </div>
+    <>
+      <Navbar />
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorksSection />
+      <CtaSection />
+      <Footer />
+    </>
   );
 }
