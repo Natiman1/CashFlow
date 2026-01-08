@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between gap-6">
           {/* Brand */}
           <div>
-            <h3 className="font-semibold">FinanceTracker</h3>
+            <h3 className="font-semibold">CashFlow</h3>
             <p className="mt-2 text-sm text-gray-600 max-w-sm">
               Simple, secure personal finance tracking for everyone.
             </p>

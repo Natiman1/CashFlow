@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { ChevronRight, Menu, X } from "lucide-react";
 import NavLink from "@/components/ui/nav-link";
+import LinkBtn from "@/components/ui/link-btn";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -13,8 +14,8 @@ export default function Navbar() {
     <header className="border-b border-gray-200 sticky top-0 z-50 bg-white">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="text-lg font-semibold">
-          FinanceTracker
+        <Link href="/" className="text-lg font-semibold text-gray-900">
+          CashFlow
         </Link>
 
         {/* Desktop nav */}
@@ -33,17 +34,18 @@ export default function Navbar() {
           </Link> */}
           <NavLink href="#features">Features</NavLink>
           <NavLink href="#how-it-works">How it works</NavLink>
-          <NavLink href="#pricing">Pricing</NavLink>
+          <NavLink href="#overview">Overview</NavLink>
         </nav>
 
         {/* Desktop actions */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link
+        <div className="hidden md:flex items-center gap-5">
+          <LinkBtn
             href="/login"
-            className="text-sm text-gray-600 hover:text-gray-900"
+            
           >
             Login
-          </Link>
+            <ChevronRight className="h-4 w-4" />
+          </LinkBtn>
           <Link href="/register">
             <Button size="sm">Get started</Button>
           </Link>

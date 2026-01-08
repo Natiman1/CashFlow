@@ -7,11 +7,11 @@ import { cn } from "@/lib/cn";
 --------------------------------------------- */
 
 const cardVariants = cva(
-  "relative rounded-xl bg-white text-gray-900 transition-shadow hover:shadow-md focus-within:shadow-md",
+  "relative rounded-xl bg-white text-gray-900 transition-shadow hover:shadow-lg cursor-pointer focus-within:shadow-md",
   {
     variants: {
       variant: {
-        feature: "p-6",
+        feature: "p-6 flex items-start flex-col",
         step: "p-6 flex gap-4 items-start",
       },
       elevation: {

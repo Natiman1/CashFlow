@@ -5,6 +5,7 @@ import HeroSection from "./sections/hero";
 import FeaturesSection from "./sections/features";
 import HowItWorksSection from "./sections/how-it-works";
 import CtaSection from "./sections/cta";
+import OverviewSection from "./sections/overview";
 export default function Home() {
   return (
     <>
@@ -12,6 +13,7 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection />
       <HowItWorksSection />
+      <OverviewSection />
       <CtaSection />
       <Footer />
     </>
