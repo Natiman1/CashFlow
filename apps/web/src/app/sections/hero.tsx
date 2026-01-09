@@ -3,6 +3,7 @@ import LinkBtn from "@/components/ui/link-btn";
 import { ArrowUpRight } from "lucide-react";
 
 import Image from "next/image";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -17,16 +18,17 @@ const HeroSection = () => {
           life.
         </p>
         <div className="flex gap-4 items-center justify-center mt-8">
-          <Button size="sm" >Get started</Button>
+          <Link href="/register">
+            <Button size="sm">Get started</Button>
+          </Link>
           <LinkBtn href="#">
             Learn more
             <ArrowUpRight className="w-4 h-4" />
           </LinkBtn>
         </div>
       </div>
-      <div>
-        <Image src="/Desktop-1.png" alt="Hero image" width={800} height={720} />
-      </div>
+
+      <Image src="/Desktop-1.png" alt="Hero image" width={800} height={720} />
     </section>
   );
 };

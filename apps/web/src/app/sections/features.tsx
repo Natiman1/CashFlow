@@ -7,21 +7,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import LinkBtn from "@/components/ui/link-btn";
-import { ArrowUpRight } from "lucide-react";
-import { ScanEye } from "lucide-react";
+import SectionHeader from "@/components/ui/section-header";
+import { ArrowUpRight, ScanEye, BarChart2, Wallet, ShieldCheck } from "lucide-react";
 const FeaturesSection = () => {
   const data = {
-    features: [
+      features: [
       {
-        icon: "ScanEye",
+        icon: ScanEye,
         label: "Tracking",
         title: "Automatic expense categorization",
         description:
-          "Log transactions once and TrackWise organizes them into clear categories so you always know where your money goes.",
+          "Log transactions once and CashFlow organizes them into clear categories so you always know where your money goes.",
         href: "#",
       },
       {
-        icon: "budgeting-icon",
+        icon: BarChart2,
         label: "Analytics",
         title: "Clear financial insights",
         description:
@@ -29,7 +29,7 @@ const FeaturesSection = () => {
         href: "#",
       },
       {
-        icon: "budgeting-icon",
+        icon: Wallet,
         label: "Budgets",
         title: "Budget awareness",
         description:
@@ -37,7 +37,7 @@ const FeaturesSection = () => {
         href: "#",
       },
       {
-        icon: "budgeting-icon",
+        icon: ShieldCheck,
         label: "Privacy",
         title: "Your data stays yours alone",
         description:
@@ -48,17 +48,24 @@ const FeaturesSection = () => {
   };
 
   return (
-    <section id="features" className="h-full px-5 md:px-16 md:py-26 py-16 mx-auto max-w-5xl flex flex-col justify-between items-center gap-10 md:gap-20">
-      <div className="text-center">
+    <section id="features" className="h-full px-5 md:px-12 md:py-26 py-16 mx-auto max-w-5xl flex flex-col justify-between items-center gap-10 md:gap-20">
+      {/* <div className="text-center">
         <p className="text-300 md:text-400 font-semibold uppercase text-gray-900">Features</p>
         <h2 className="text-800 md:text-1000 font-medium text-gray-900">What makes CashFlow work</h2>
         <p className="text-300 md:text-400 text-gray-400">Built for people who want real answers about their money</p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:grid-cols-4">
-        {data.features.map((feature) => (
+      </div> */}
+      <SectionHeader
+        label="Features"
+        title="What makes CashFlow work"
+        description="Built for people who want real answers about their money"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4">
+        {data.features.map((feature) => {
+          const Icon = feature.icon as React.ElementType;
+          return (
           <div key={feature.title} >
             <Card variant="feature">
-              <CardIcon>{feature.icon}</CardIcon>
+              <CardIcon>{Icon ? <Icon className="w-12 h-12" /> : null}</CardIcon>
               <CardLabel>{feature.label}</CardLabel>
               <CardTitle>{feature.title}</CardTitle>
               <CardDescription>{feature.description}</CardDescription>
@@ -70,7 +77,7 @@ const FeaturesSection = () => {
               </CardAction>
             </Card>
           </div>
-        ))}
+        )})}
       </div>
     </section>
   );

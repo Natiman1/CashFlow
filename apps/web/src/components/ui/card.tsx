@@ -12,7 +12,7 @@ const cardVariants = cva(
     variants: {
       variant: {
         feature: "p-6 flex items-start flex-col",
-        step: "p-6 flex gap-4 items-start",
+        step: "p-6 flex gap-4 items-center md:items-start flex-col ",
       },
       elevation: {
         flat: "border border-gray-200",
@@ -51,13 +51,13 @@ export const CardIcon = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const CardBadge = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-500 text-emerald-500 font-medium">
+  <div className=" flex h-12 w-12 text-500 items-center justify-center rounded-full border border-primary-500 text-primary-500 font-medium">
     {children}
   </div>
 );
 
 export const CardLabel = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-xs font-medium text-gray-500 uppercase">
+  <span className=" text-xs font-medium text-gray-500 uppercase">
     {children}
   </span>
 );
