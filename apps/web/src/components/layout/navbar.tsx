@@ -72,7 +72,7 @@ export default function Navbar() {
               How it works
             </Link>
             <Link href="#pricing" onClick={() => setOpen(false)}>
-              Pricing
+              Overview
             </Link>
 
             <div className="pt-4 flex flex-col gap-3">
