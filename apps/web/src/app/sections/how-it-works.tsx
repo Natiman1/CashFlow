@@ -1,4 +1,4 @@
-import { Card, CardBadge, CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardBadge, CardDescription, CardTitle } from "@/components/layout/card";
 import SectionHeader from "@/components/ui/section-header";
 
 const howItWorks = () => {

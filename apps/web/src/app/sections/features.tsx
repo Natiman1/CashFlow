@@ -5,7 +5,7 @@ import {
   CardIcon,
   CardLabel,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/layout/card";
 import LinkBtn from "@/components/ui/link-btn";
 import SectionHeader from "@/components/ui/section-header";
 import { ArrowUpRight, ScanEye, BarChart2, Wallet, ShieldCheck } from "lucide-react";

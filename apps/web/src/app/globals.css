@@ -5,10 +5,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-body {
-  font-family: var(--font-poppins), sans-serif;
-  background-color: #ffffff;
-}
+
 
 h1,
 h2,
@@ -50,7 +47,7 @@ h6 {
   --color-amber-700: #99650c;
   --color-amber-800: #6b480d;
 
-  --color-grey-50: #ecedee;
+  --color-grey-50: #FFFFFF;
   --color-grey-100: #dadbdd;
   --color-grey-200: #b4b6bb;
   --color-grey-300: #8f9299;
