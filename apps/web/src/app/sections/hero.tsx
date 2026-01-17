@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <section className="mx-auto max-w-5xl h-full flex flex-col justify-between items-center gap-8 px-5 md:px-16 md:py-26 py-16">
+    <section className=" mx-auto max-w-5xl h-full flex flex-col justify-between items-center gap-8 px-5 md:px-16 md:py-26 py-16">
       <div className="text-center flex flex-col gap-4 max-w-3xl ">
         <h1 className="text-900 md:text-1100 font-bold text-gray-900 leading-tight">
           Take control of your money
@@ -19,7 +19,7 @@ const HeroSection = () => {
         </p>
         <div className="flex gap-4 items-center justify-center mt-8">
           <Link href="/register">
-            <Button size="sm">Get started</Button>
+            <Button>Get started</Button>
           </Link>
           <LinkBtn href="#">
             Learn more
