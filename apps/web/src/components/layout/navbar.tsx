@@ -20,18 +20,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm text-gray-600">
-          {/* <Link
-            href="#features"
-            className="hover:text-gray-900 border-b-4 border-white hover:border-primary-500 py-2 active:border-primary-500"
-          >
-            Features
-          </Link>
-          <Link href="#how-it-works" className="hover:text-gray-900 hover:border-b-4 border-b-4 border-white hover:border-primary-500 py-2">
-            How it works
-          </Link>
-          <Link href="#pricing" className="hover:text-gray-900 hover:border-b-4 border-b-4 border-white hover:border-primary-500 py-2">
-            Pricing
-          </Link> */}
+          
           <NavLink href="#features">Features</NavLink>
           <NavLink href="#how-it-works">How it works</NavLink>
           <NavLink href="#overview">Overview</NavLink>
