@@ -52,7 +52,7 @@ export default function Sidebar() {
 
       <aside
         className={`
-          fixed z-50 h-screen bg-white transition-all duration-300
+          fixed z-50 h-screen bg-background border-r  transition ease-in-out duration-300
           md:relative 
           ${isOpen ? "w-60 translate-x-0" : "w-0 -translate-x-full "}
         `}
@@ -74,7 +74,7 @@ export default function Sidebar() {
                     className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
                       isActive
                         ? "bg-emerald-50 text-emerald-600"
-                        : "text-gray-600 hover:bg-gray-100"
+                        : " hover:bg-muted hover:text-foreground"
                     }`}
                   >
                     <item.icon className="h-4 w-4" />
