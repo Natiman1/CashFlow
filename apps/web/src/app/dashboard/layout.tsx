@@ -12,14 +12,15 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen bg-background overflow-hidden">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main content */}
-      <div className="flex-1 transition-all duration-300">
+      <div className="flex-1 transition-all duration-300 flex flex-col min-h-0">
         <Topbar />
-        <main className="flex-1 p-6">{children}</main>
+      
+        <main className="flex-1 p-6 min-h-0 overflow-y-auto">{children}</main>
       </div>
     </div>
     </SidebarProvider>

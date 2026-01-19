@@ -46,24 +46,24 @@ export default function Sidebar() {
       {isOpen && (
         <div
           onClick={close}
-          className="fixed inset-0 z-40 bg-black/50 md:hidden "
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
         />
       )}
 
       <aside
         className={`
-          fixed z-50 h-screen bg-background border-r  transition ease-in-out duration-300
-          md:relative 
+          fixed z-50 h-screen bg-background border-r transition-all duration-300
+          md:static
           ${isOpen ? "w-60 translate-x-0" : "w-0 -translate-x-full "}
         `}
       >
         {isOpen && (
-          <div>
+          <div className="">
             <div className="flex h-16 items-center px-6 text-lg font-semibold">
               CashFlow
             </div>
 
-            <nav className="px-4 py-4 space-y-1">
+            <nav className="px-4 py-4 space-y-1 h-full overflow-y-auto">
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
 

@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${poppins.variable}  antialiased scroll-smooth`}
+        className={`${inter.variable} ${poppins.variable} dark antialiased scroll-smooth`}
       >
        
         {children}
