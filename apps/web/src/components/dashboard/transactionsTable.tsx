@@ -2,12 +2,15 @@
 
 import {
   ColumnDef,
+  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   getPaginationRowModel,
   useReactTable,
+  getFilteredRowModel,
+  ColumnFiltersState,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { Transaction } from "@/lib/mock/transactions";
@@ -22,6 +25,16 @@ type Props = {
 export default function TransactionsTable({ data }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  function filterByMonth(
+    row: Row<Transaction>,
+    columnId: string,
+    value: string,
+  ) {
+    if (!value) return true;
+    return String(row.getValue(columnId) ?? "").startsWith(value);
+  }
 
   const columns: ColumnDef<Transaction>[] = [
     {
@@ -72,16 +85,19 @@ export default function TransactionsTable({ data }: Props) {
           <ArrowUpDown className="h-3 w-3" />
         </button>
       ),
+      filterFn: filterByMonth,
     },
   ];
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, pagination },
+    state: { sorting, pagination, columnFilters },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
@@ -96,52 +112,94 @@ export default function TransactionsTable({ data }: Props) {
 
   return (
     <>
-    <div className="overflow-x-auto overflow-y-auto  max-h-110 rounded-lg border bg-background min-w-0">
-      <table className="min-w-full w-max table-fixed text-sm">
-        {/* 🔒 Column width lock */}
-        <colgroup>
-          {table.getAllLeafColumns().map((column) => (
-            <col key={column.id} style={{ width: column.getSize() }} />
-          ))}
-        </colgroup>
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <select
+          value={
+            (table.getColumn("category")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(e) =>
+            table
+              .getColumn("category")
+              ?.setFilterValue(e.target.value || undefined)
+          }
+          className="h-9 rounded-md border px-3 text-sm"
+        >
+          <option value="">All categories</option>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Rent">Rent</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Entertainment">Entertainment</option>
+        </select>
+        <input
+          type="month"
+          value={(table.getColumn("date")?.getFilterValue() as string) ?? ""}
+          onChange={(e) =>
+            table.getColumn("date")?.setFilterValue(e.target.value || undefined)
+          }
+          className="h-9 rounded-md border px-3 text-sm"
+        />
+      </div>
+      <div className="overflow-x-auto overflow-y-auto  max-h-110 rounded-lg border bg-background min-w-0">
+        <table className="min-w-full w-max table-fixed text-sm">
+          {/* 🔒 Column width lock */}
+          <colgroup>
+            {table.getAllLeafColumns().map((column) => (
+              <col key={column.id} style={{ width: column.getSize() }} />
+            ))}
+          </colgroup>
 
-        <thead className="bg-muted">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  colSpan={header.colSpan}
-                  className="sticky top-0 z-10 bg-muted px-4 py-3 text-left whitespace-nowrap font-medium text-muted-foreground"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+          <thead className="bg-muted">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className="sticky top-0 z-10 bg-muted px-4 py-3 text-left whitespace-nowrap font-medium text-muted-foreground"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
 
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t hover:bg-gray-50">
-              {row.getVisibleCells().map((cell) => (
+          <tbody>
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
                 <td
-                  key={cell.id}
-                  style={{ width: cell.column.getSize() }}
-                  className="px-4 py-3 text-foreground whitespace-nowrap"
+                  colSpan={columns.length}
+                  className="px-4 py-3 text-foreground whitespace-nowrap text-center"
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  No transactions found
                 </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="border-t hover:bg-gray-50">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                      className="px-4 py-3 text-foreground whitespace-nowrap"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
       <div className="mt-3 flex items-center justify-end gap-2 text-sm text-gray-700">
         <Button
@@ -156,7 +214,7 @@ export default function TransactionsTable({ data }: Props) {
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </span>
-        <Button 
+        <Button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
           className="disabled:opacity-50"
