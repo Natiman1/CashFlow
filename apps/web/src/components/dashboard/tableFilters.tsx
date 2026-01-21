@@ -2,6 +2,13 @@ import { Table } from "@tanstack/react-table";
 import { Transaction } from "@/lib/mock/transactions";
 import { DatePicker } from "@/components/ui/datePicker";
 import { format } from "date-fns";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
   table: Table<Transaction>;
@@ -13,22 +20,28 @@ const TableFilters = ({ table }: Props) => {
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-3">
-      <select
-        value={(table.getColumn("category")?.getFilterValue() as string) ?? ""}
-        onChange={(e) =>
+      <Select
+        value={
+          (table.getColumn("category")?.getFilterValue() as string) ?? "all"
+        }
+        onValueChange={(value) =>
           table
             .getColumn("category")
-            ?.setFilterValue(e.target.value || undefined)
+            ?.setFilterValue(value === "all" ? undefined : value)
         }
-        className="h-9 rounded-md border px-3 text-sm"
       >
-        <option value="">All categories</option>
-        <option value="Food">Food</option>
-        <option value="Transport">Transport</option>
-        <option value="Rent">Rent</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Entertainment">Entertainment</option>
-      </select>
+        <SelectTrigger className="w-45">
+          <SelectValue placeholder="Category" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All categories</SelectItem>
+          <SelectItem value="Food">Food</SelectItem>
+          <SelectItem value="Transport">Transport</SelectItem>
+          <SelectItem value="Rent">Rent</SelectItem>
+          <SelectItem value="Utilities">Utilities</SelectItem>
+          <SelectItem value="Entertainment">Entertainment</SelectItem>
+        </SelectContent>
+      </Select>
       <DatePicker
         date={date}
         setDate={(date) => {
