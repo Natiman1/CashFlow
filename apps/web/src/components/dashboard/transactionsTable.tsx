@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
-  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -14,9 +12,10 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { Transaction } from "@/lib/mock/transactions";
-import { ArrowUpDown } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import columns from "./columns";
+import Pagination from "./pagination";
+import TableFilters from "./tableFilters";
 
 type Props = {
   data: Transaction[];
@@ -27,67 +26,9 @@ export default function TransactionsTable({ data }: Props) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  function filterByMonth(
-    row: Row<Transaction>,
-    columnId: string,
-    value: string,
-  ) {
-    if (!value) return true;
-    return String(row.getValue(columnId) ?? "").startsWith(value);
-  }
+ 
 
-  const columns: ColumnDef<Transaction>[] = [
-    {
-      accessorKey: "title",
-      header: "Description",
-      size: 240,
-      cell: (info) => info.getValue(),
-    },
-    {
-      accessorKey: "category",
-      header: "Category",
-      size: 160,
-    },
-    {
-      accessorKey: "amount",
-      size: 140,
-      header: ({ column }) => (
-        <button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex items-center gap-1"
-        >
-          Amount
-          <ArrowUpDown className="h-3 w-3" />
-        </button>
-      ),
-      cell: ({ getValue }) => {
-        const value = getValue<number>();
-        return (
-          <span
-            className={`font-medium ${
-              value < 0 ? "text-red-500" : "text-emerald-600"
-            }`}
-          >
-            {value < 0 ? "-" : "+"}${Math.abs(value)}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: "date",
-      size: 140,
-      header: ({ column }) => (
-        <button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex items-center gap-1"
-        >
-          Date
-          <ArrowUpDown className="h-3 w-3" />
-        </button>
-      ),
-      filterFn: filterByMonth,
-    },
-  ];
+ 
 
   const table = useReactTable({
     data,
@@ -112,34 +53,7 @@ export default function TransactionsTable({ data }: Props) {
 
   return (
     <>
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <select
-          value={
-            (table.getColumn("category")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(e) =>
-            table
-              .getColumn("category")
-              ?.setFilterValue(e.target.value || undefined)
-          }
-          className="h-9 rounded-md border px-3 text-sm"
-        >
-          <option value="">All categories</option>
-          <option value="Food">Food</option>
-          <option value="Transport">Transport</option>
-          <option value="Rent">Rent</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Entertainment">Entertainment</option>
-        </select>
-        <input
-          type="month"
-          value={(table.getColumn("date")?.getFilterValue() as string) ?? ""}
-          onChange={(e) =>
-            table.getColumn("date")?.setFilterValue(e.target.value || undefined)
-          }
-          className="h-9 rounded-md border px-3 text-sm"
-        />
-      </div>
+      <TableFilters table={table} />
       <div className="overflow-x-auto overflow-y-auto  max-h-110 rounded-lg border bg-background min-w-0">
         <table className="min-w-full w-max table-fixed text-sm">
           {/* 🔒 Column width lock */}
@@ -156,6 +70,7 @@ export default function TransactionsTable({ data }: Props) {
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
+                    scope="col"
                     className="sticky top-0 z-10 bg-muted px-4 py-3 text-left whitespace-nowrap font-medium text-muted-foreground"
                   >
                     {header.isPlaceholder
@@ -201,42 +116,7 @@ export default function TransactionsTable({ data }: Props) {
           </tbody>
         </table>
       </div>
-      <div className="mt-3 flex items-center justify-end gap-2 text-sm text-gray-700">
-        <Button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className=" disabled:opacity-50"
-          size={"sm"}
-        >
-          Previous
-        </Button>
-        <span>
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </span>
-        <Button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className="disabled:opacity-50"
-          size={"sm"}
-        >
-          Next
-        </Button>
-
-        <select
-          className="ml-4 rounded border px-2 py-1 text-sm"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[5, 10, 20].map((size) => (
-            <option key={size} value={size}>
-              Show {size}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Pagination table={table} />
     </>
   );
 }
