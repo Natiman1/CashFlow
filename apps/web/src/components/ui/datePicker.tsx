@@ -23,13 +23,13 @@ export function DatePicker({ date, setDate }: Props) {
         <Button
           variant="outline"
           data-empty={!date}
-          className="data-[empty=true]:text-muted-foreground w-53 justify-between text-left font-normal"
+          className="data-[empty=true]:text-muted-foreground bg-card hover:bg-muted w-54 justify-between text-left font-normal"
         >
           {date ? format(date, "PPP") : <span>Pick a date</span>}
           <ChevronDownIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-53 p-0" align="start">
+      <PopoverContent className="w-54 p-0" align="start">
         <Calendar
           mode="single"
           selected={date}

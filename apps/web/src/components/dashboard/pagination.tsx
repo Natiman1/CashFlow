@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
 type Props = {
   table: Table<Transaction>;
 };
@@ -21,21 +21,21 @@ const Pagination = ({ table }: Props) => {
         onClick={() => table.previousPage()}
         disabled={!table.getCanPreviousPage()}
         className=" disabled:opacity-50"
-        size={"sm"}
+        size={"icon"}
       >
-        Previous
+        <ChevronLeft />
       </Button>
-      <span>
-        Page {table.getState().pagination.pageIndex + 1} of{" "}
+      <span className="text-popover-foreground">
+        {table.getState().pagination.pageIndex + 1} of{" "}
         {table.getPageCount()}
       </span>
       <Button
         onClick={() => table.nextPage()}
         disabled={!table.getCanNextPage()}
         className="disabled:opacity-50"
-        size={"sm"}
+        size={"icon"}
       >
-        Next
+        <ChevronRight />
       </Button>
 
       <Select
@@ -44,7 +44,7 @@ const Pagination = ({ table }: Props) => {
           table.setPageSize(Number(value));
         }}
       >
-        <SelectTrigger className="ml-4 h-8 w-25">
+        <SelectTrigger className="ml-4 h-8 w-25 text-popover-foreground">
           <SelectValue placeholder={table.getState().pagination.pageSize} />
         </SelectTrigger>
         <SelectContent side="top">

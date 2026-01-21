@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-gray-900">Transactions</h1>
+        <h1 className="text-lg font-semibold text-foreground">Transactions</h1>
 
         <Button>Add transaction</Button>
       </div>

@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="flex-1 transition-all duration-300 flex flex-col min-h-0 min-w-0 overflow-x-hidden">
           <Topbar />
 
-          <main className="flex-1 p-6 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden">
+          <main className="flex-1 p-6 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden bg-background">
             {children}
           </main>
         </div>

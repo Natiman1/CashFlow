@@ -16,6 +16,7 @@ import { Transaction } from "@/lib/mock/transactions";
 import columns from "./columns";
 import Pagination from "./pagination";
 import TableFilters from "./tableFilters";
+import ExportToCsv from "./exportToCvs";
 
 type Props = {
   data: Transaction[];
@@ -25,10 +26,6 @@ export default function TransactionsTable({ data }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
- 
-
- 
 
   const table = useReactTable({
     data,
@@ -43,6 +40,7 @@ export default function TransactionsTable({ data }: Props) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+
   if (data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed p-8 text-center text-sm text-gray-500">
@@ -53,7 +51,11 @@ export default function TransactionsTable({ data }: Props) {
 
   return (
     <>
+    <div className="flex flex-wrap items-start justify-between">
       <TableFilters table={table} />
+      <ExportToCsv table={table} />
+    </div>
+      
       <div className="overflow-x-auto overflow-y-auto  max-h-110 rounded-lg border bg-background min-w-0">
         <table className="min-w-full w-max table-fixed text-sm">
           {/* 🔒 Column width lock */}
@@ -85,7 +87,7 @@ export default function TransactionsTable({ data }: Props) {
             ))}
           </thead>
 
-          <tbody>
+          <tbody className="bg-card">
             {table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td
@@ -97,7 +99,7 @@ export default function TransactionsTable({ data }: Props) {
               </tr>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t hover:bg-gray-50">
+                <tr key={row.id} className="border-t hover:bg-muted">
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
