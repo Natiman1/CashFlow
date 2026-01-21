@@ -1,5 +1,5 @@
 import TransactionsTable from "@/components/dashboard/transactionsTable";
-import { Button } from "@/components/ui/button";
+import AddTransactionModal from "@/components/dashboard/addTransactionModal";
 import { transactions } from "@/lib/mock/transactions";
 
 const page = () => {
@@ -8,7 +8,7 @@ const page = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold text-foreground">Transactions</h1>
 
-        <Button>Add transaction</Button>
+        <AddTransactionModal text="Add transaction" />
       </div>
 
       <TransactionsTable data={transactions} />
