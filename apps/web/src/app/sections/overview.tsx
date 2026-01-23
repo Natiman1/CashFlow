@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui";
+import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/ui/section-header";
 import LinkBtn from "@/components/ui/link-btn";
 import Image from "next/image";
