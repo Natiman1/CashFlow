@@ -4,9 +4,9 @@ export type Budget = {
 };
 
 export const mockBudgets: Budget[] = [
-  { category: "Food", limit: 300 },
-  { category: "Transport", limit: 120 },
+  { category: "Food", limit: 3000 },
+  { category: "Transport", limit: 1200 },
   { category: "Rent", limit: 800 },
   { category: "Utilities", limit: 150 },
-  { category: "Entertainment", limit: 100 },
+  { category: "Entertainment", limit: 1000 },
 ];

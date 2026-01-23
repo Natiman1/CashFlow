@@ -1,23 +1,35 @@
-import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Progress } from "@/components/ui/progress";
 
 type BudgetCardProps = {
   category: string;
   limit: number;
+  spent: number;
 };
 
-export default function BudgetCard({ category, limit }: BudgetCardProps) {
+export default function BudgetCard({
+  category,
+  limit,
+  spent,
+}: BudgetCardProps) {
+  const percentage = limit > 0 ? Math.floor(Math.min((spent / limit) * 100, 100)) : 0;
+
+  let color = "bg-emerald-500";
+  if (percentage >= 80 && percentage < 100) color = "bg-amber-500";
+  if (percentage >= 100) color = "bg-red-500";
+
   return (
     <div className="rounded-lg border bg-card p-4 space-y-3">
       <Field className="w-full max-w-sm">
-        <FieldLabel htmlFor="progress-upload">
+        <FieldLabel htmlFor="category">
           <span>{category}</span>
-          <span className="ml-auto">{0}%</span>
+          <span className="ml-auto">{percentage}%</span>
         </FieldLabel>
-        <Progress value={0} id="progress-upload" />
+        <Progress value={percentage} indicatorClassName={color} id="catagory" />
         <FieldLabel>
-          <span className="text-xs text-muted-foreground">$0 / ${limit}</span>
+          <span className="text-xs text-muted-foreground">
+            ${spent} / ${limit}
+          </span>
         </FieldLabel>
       </Field>
     </div>
