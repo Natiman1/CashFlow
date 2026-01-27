@@ -3,7 +3,7 @@
 @plugin "tailwindcss-animate";
 
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 
 
@@ -143,6 +143,10 @@ h6 {
   /* Destructive (red) */
   --destructive: var(--color-red-500);
   --destructive-foreground: #ffffff;
+
+  /* Warning (yellow) */
+  --warning: var(--color-amber-500);
+  --warning-foreground: #ffffff;
 
   /* Borders & inputs */
   --border: var(--color-grey-200);
