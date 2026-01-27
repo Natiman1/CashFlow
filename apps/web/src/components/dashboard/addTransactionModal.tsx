@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,13 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { Transaction } from "@/lib/mock/transactions";
 
 type AddTransactionModalProps = {
   text: string;
-  
+  onAddTransaction: (transaction: Transaction) => void;
 };
 
-const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
+const AddTransactionModal = ({
+  text,
+  onAddTransaction,
+}: AddTransactionModalProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<number | "">("");
   const [title, setTitle] = useState("");
@@ -46,6 +51,20 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
       date,
     });
 
+   
+
+    onAddTransaction({
+      amount: Number(amount),
+      id: Math.random().toString(36).substr(2, 9),
+      title,
+      category,
+      date: (date ?? new Date()).toISOString().split("T")[0],
+    });
+
+     toast.success("Transaction added", {
+      description: "Transaction added successfully",
+    });
+
     // Close modal and reset form
     setOpen(false);
     setAmount("");
@@ -57,7 +76,7 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button >{text}</Button>
+        <Button>{text}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106.25">
         <form onSubmit={handleSubmit}>

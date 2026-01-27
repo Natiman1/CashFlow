@@ -8,12 +8,16 @@ export default function ExportToCsv({ table }: { table: Table<Transaction> }) {
     .getFilteredRowModel()
     .rows.map((row) => row.original);
 
+    
+
   const formattedRows = filteredRows.map((t) => ({
     Category: t.category,
     Description: t.title,
     Amount: t.amount,
     Date: t.date,
   }));
+
+
 
   return (
     <Button

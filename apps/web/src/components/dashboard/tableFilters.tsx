@@ -9,14 +9,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { toast } from "sonner";
 type Props = {
   table: Table<Transaction>;
+  onAddTransaction: (transaction: Transaction) => void;
 };
 
-const TableFilters = ({ table }: Props) => {
+const TableFilters = ({ table, onAddTransaction }: Props) => {
   const filterValue = table.getColumn("date")?.getFilterValue() as string;
   const date = filterValue ? new Date(filterValue + "-01") : undefined;
+
+  const handleAddTransaction = (transaction: Transaction) => {
+    onAddTransaction(transaction);
+    toast.success("Transaction added successfully");
+  };
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -50,6 +56,7 @@ const TableFilters = ({ table }: Props) => {
             ?.setFilterValue(date ? format(date, "yyyy-MM") : undefined);
         }}
       />
+     
     </div>
   );
 };

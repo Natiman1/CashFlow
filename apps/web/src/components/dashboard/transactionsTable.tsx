@@ -10,7 +10,7 @@ import {
   getFilteredRowModel,
   ColumnFiltersState,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Transaction } from "@/lib/mock/transactions";
 
 import columns from "./columns";
@@ -27,8 +27,18 @@ export default function TransactionsTable({ data }: Props) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  const [transactions, setTransactions] = useState<Transaction[]>(data);
+
+  useEffect(() => {
+    setTransactions(data);
+  }, [data]);
+
+  const handleAddTransaction = (transaction: Transaction) => {
+    setTransactions((prev) => [...prev, transaction]);
+  };
+
   const table = useReactTable({
-    data,
+    data: transactions,
     columns,
     state: { sorting, pagination, columnFilters },
     onSortingChange: setSorting,
@@ -40,8 +50,7 @@ export default function TransactionsTable({ data }: Props) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-
-  if (data.length === 0) {
+  if (transactions.length === 0) {
     return (
       <div className="rounded-lg border border-dashed p-8 text-center text-sm text-gray-500">
         No transactions yet
@@ -51,11 +60,11 @@ export default function TransactionsTable({ data }: Props) {
 
   return (
     <>
-    <div className="flex flex-wrap items-start justify-between">
-      <TableFilters table={table} />
-      <ExportToCsv table={table} />
-    </div>
-      
+      <div className="flex flex-wrap items-start justify-between">
+        <TableFilters table={table} onAddTransaction={handleAddTransaction} />
+        <ExportToCsv table={table} />
+      </div>
+
       <div className="overflow-x-auto overflow-y-auto  max-h-110 rounded-lg border bg-background min-w-0">
         <table className="min-w-full w-max table-fixed text-sm">
           {/* 🔒 Column width lock */}
