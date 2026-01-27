@@ -31,8 +31,8 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased scroll-smooth`}
       >
-        {children}
         <Toaster />
+        {children}
       </body>
     </html>
   );

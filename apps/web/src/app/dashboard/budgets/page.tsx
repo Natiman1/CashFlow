@@ -23,7 +23,7 @@ const BudgetsPage = () => {
       ),
     );
 
-    toast.success("Budget updated", {
+    toast.error("Budget updated", {
       description: `${category} budget set to $${newLimit}`,
     });
     setSelectedBudget(null);
