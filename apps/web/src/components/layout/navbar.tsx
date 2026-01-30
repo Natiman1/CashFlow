@@ -10,15 +10,19 @@ import { signOut, useSession } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   return (
     <header className="border-b border-gray-200 sticky top-0 z-50 bg-white">
@@ -43,25 +47,43 @@ export default function Navbar() {
                 <Button size="sm">Dashboard</Button>
               </Link>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                 
-                    <Avatar className="cursor-pointer">
-                      <AvatarFallback className="bg-primary-500 text-white">
+                <DropdownMenuTrigger>
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-primary text-white">
                         {session.user.name[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>
-                    <div>
-                      <p>{session.user.name}</p>
-                      <p>{session.user.email}</p>
+                <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {session.user.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {session.user.email}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuLabel onClick={() => signOut()}>
-                    Logout
-                  </DropdownMenuLabel>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      const result = await signOut();
+                      if (result.data) {
+                        router.push("/sign-in");
+                      } else {
+                        alert("Error signing out");
+                      }
+                    }}
+                  >
+                    Log Out
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
@@ -102,15 +124,52 @@ export default function Navbar() {
               Overview
             </Link>
 
-            <div className="pt-4 flex flex-col gap-3">
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="text-gray-600"
-              >
-                Login
-              </Link>
-              <Button onClick={() => setOpen(false)}>Get started</Button>
+            <div className="pt-4 flex items-center gap-3">
+              {session?.user ? (
+                <>
+                  <Link href="/dashboard">
+                    <Button size="sm">Dashboard</Button>
+                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Avatar className="cursor-pointer">
+                        <AvatarFallback className="bg-primary-500 text-white">
+                          {session.user.name[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>
+                        <div>
+                          <p>{session.user.name}</p>
+                          <p>{session.user.email}</p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel
+                        onClick={async () => {
+                          await signOut();
+                          router.push("/login");
+                        }}
+                        className="cursor-pointer"
+                      >
+                        Logout
+                      </DropdownMenuLabel>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="text-gray-600"
+                  >
+                    Login
+                  </Link>
+                  <Button onClick={() => setOpen(false)}>Get started</Button>
+                </>
+              )}
             </div>
           </nav>
         </div>

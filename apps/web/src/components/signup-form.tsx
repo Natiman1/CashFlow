@@ -22,7 +22,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { registerAction } from "@/actions/auth";
+import { useSession } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
@@ -43,6 +45,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [formError, setFormError] = useState<string | null>(null);
 
   const router = useRouter();
+  const { data: user } = useSession();
 
   const {
     register,
@@ -52,25 +55,26 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     resolver: zodResolver(registerSchema),
   });
 
+  if (user){
+      router.push("/dashboard")
+    }
+
   async function onSubmit(data: RegisterFormValues) {
+    
     setIsLoading(true);
     setFormError(null);
 
-    try {
-      const result = await signUp.email({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-      if (result.error) {
-        setFormError(result.error.message ?? "Something went wrong");
-      }
-      router.push("/dashboard");
-    } catch {
-      setFormError("Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    const res = await registerAction(data)
+
+if (res?.error) {
+  setFormError(res.error)
+  return
+}
+
+router.push("/verify-email")
+    toast.success("Account created successfully", {
+      description: "You are now logged in",
+    });
   }
 
   return (

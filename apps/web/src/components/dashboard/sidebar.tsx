@@ -59,9 +59,11 @@ export default function Sidebar() {
       >
         {isOpen && (
           <div className="">
-            <div className="flex h-16 items-center px-6 text-lg font-semibold">
-              CashFlow
-            </div>
+            <Link href="/">
+              <div className="flex h-16 items-center px-6 text-lg font-semibold cursor-pointer">
+                CashFlow
+              </div>
+            </Link>
 
             <nav className="px-4 py-4 space-y-1 h-full overflow-y-auto">
               {navItems.map((item) => {

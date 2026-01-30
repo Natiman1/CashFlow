@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
+import { toast } from "sonner";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -57,7 +58,13 @@ export function LoginForm({
       if (result.error) {
         setFormError(result.error.message ?? "Something went wrong");
       }
-      router.push("/dashboard");
+
+      if (result.data?.user) {
+        router.push("/dashboard");
+        toast.success("Login successful", {
+          description: "You are now logged in",
+        });
+      }
     } catch {
       setFormError("Invalid email or password");
     } finally {
