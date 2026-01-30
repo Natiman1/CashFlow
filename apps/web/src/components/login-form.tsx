@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { redirect } from "next/navigation";
-
+import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth-client";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -34,6 +34,8 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -47,17 +49,20 @@ export function LoginForm({
     setFormError(null);
 
     try {
-      // Mock API delay
-      await new Promise((res) => setTimeout(res, 1000));
+      const result = await signIn.email({
+        email: data.email,
+        password: data.password,
+      });
 
-      console.log("Login data:", data);
-      // Later: call NextAuth signIn()
+      if (result.error) {
+        setFormError(result.error.message ?? "Something went wrong");
+      }
+      router.push("/dashboard");
     } catch {
       setFormError("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
-    redirect('/')
   }
 
   return (
