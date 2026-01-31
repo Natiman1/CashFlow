@@ -19,8 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { loginAction } from "@/actions/auth";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -36,7 +37,7 @@ export function LoginForm({
   const [formError, setFormError] = useState<string | null>(null);
 
   const router = useRouter();
-
+  const { data: user } = useSession();
   const {
     register,
     handleSubmit,
@@ -49,27 +50,25 @@ export function LoginForm({
     setIsLoading(true);
     setFormError(null);
 
-    try {
-      const result = await signIn.email({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (result.error) {
-        setFormError(result.error.message ?? "Something went wrong");
-      }
-
-      if (result.data?.user) {
-        router.push("/dashboard");
-        toast.success("Login successful", {
-          description: "You are now logged in",
-        });
-      }
-    } catch {
-      setFormError("Invalid email or password");
-    } finally {
-      setIsLoading(false);
+    if (user) {
+      router.push("/dashboard");
     }
+
+   const result = await loginAction(data)
+
+    if (result.error) {
+      setFormError(result.error);
+    }
+
+    if (result.success) {
+      router.push("/dashboard");
+      toast.success("Login successful", {
+        description: "You are now logged in",
+      });
+    }
+
+    
+    
   }
 
   return (
