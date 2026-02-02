@@ -76,7 +76,8 @@ export default function Navbar() {
                     onClick={async () => {
                       const result = await signOut();
                       if (result.data) {
-                        router.push("/sign-in");
+                        router.push("/login");
+                        router.refresh();
                       } else {
                         alert("Error signing out");
                       }

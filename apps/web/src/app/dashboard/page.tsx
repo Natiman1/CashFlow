@@ -1,5 +1,5 @@
 
-
+export const dynamic = "force-dynamic";
 import SummaryCard from "@/components/dashboard/summaryCard";
 import {
   dashboardSummary,

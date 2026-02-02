@@ -62,6 +62,7 @@ export default function Topbar() {
                 const result = await signOut();
                 if (result.data) {
                   router.push("/login");
+                  router.refresh();
                 } else {
                   alert("Error signing out");
                 }

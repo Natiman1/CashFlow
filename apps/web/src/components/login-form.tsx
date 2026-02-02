@@ -74,13 +74,14 @@ export function LoginForm({
       if (result?.error) {
         toast.error("Google sign-in failed");
       }
+      toast.success("Login successful");
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("An unexpected error occurred during Google sign-in");
     } finally {
       setIsLoading(false);
     }
-    toast.success("Login successful");
+    
   };
 
   return (
