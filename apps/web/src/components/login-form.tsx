@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { signIn, useSession } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { loginAction } from "@/actions/auth";
 const loginSchema = z.object({
@@ -54,7 +54,7 @@ export function LoginForm({
       router.push("/dashboard");
     }
 
-   const result = await loginAction(data)
+    const result = await loginAction(data);
 
     if (result.error) {
       setFormError(result.error);
@@ -66,10 +66,25 @@ export function LoginForm({
         description: "You are now logged in",
       });
     }
-
-    
-    
   }
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const result = await signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+      if (result?.error) {
+        toast.error("Google sign-in failed");
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast.error("An unexpected error occurred during Google sign-in");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -122,7 +137,7 @@ export function LoginForm({
               <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
                 Login with Google
               </Button>
             </div>

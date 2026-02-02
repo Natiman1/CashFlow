@@ -17,6 +17,14 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
   },
 
+  socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID as string, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+            prompt: "select_account", 
+        }, 
+    },
+
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
        console.log("VERIFICATION URL:", url)

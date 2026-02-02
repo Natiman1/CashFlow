@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { registerAction } from "@/actions/auth";
-import { useSession } from "@/lib/auth-client";
+import { signIn, useSession } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
@@ -55,27 +55,44 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     resolver: zodResolver(registerSchema),
   });
 
-  if (user){
-      router.push("/dashboard")
-    }
+  if (user) {
+    router.push("/dashboard");
+  }
 
   async function onSubmit(data: RegisterFormValues) {
-    
     setIsLoading(true);
     setFormError(null);
 
-    const res = await registerAction(data)
+    const res = await registerAction(data);
 
-if (res?.error) {
-  setFormError(res.error)
-  return
-}
+    if (res?.error) {
+      setFormError(res.error);
+      return;
+    }
 
-router.push("/verify-email")
+    router.push("/verify-email");
     toast.success("Account created successfully", {
       description: "You are now logged in",
     });
   }
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const result = await signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+      if (result?.error) {
+        toast.error("Google sign-in failed");
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast.error("An unexpected error occurred during Google sign-in");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Card {...props}>
@@ -157,8 +174,8 @@ router.push("/verify-email")
                   {" "}
                   {isLoading ? "Creating account..." : "Create account"}
                 </Button>
-                <Button variant="outline" type="button">
-                  Sign up with Google
+                <Button variant="outline" type="button" onClick={handleGoogleSignIn}>
+                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account? <Link href="/login">Sign in</Link>
