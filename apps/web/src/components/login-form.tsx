@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { loginAction } from "@/actions/auth";
 const loginSchema = z.object({
@@ -37,7 +37,6 @@ export function LoginForm({
   const [formError, setFormError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { data: user } = useSession();
   const {
     register,
     handleSubmit,
@@ -49,10 +48,6 @@ export function LoginForm({
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true);
     setFormError(null);
-
-    if (user) {
-      router.push("/dashboard");
-    }
 
     const result = await loginAction(data);
 
@@ -74,6 +69,7 @@ export function LoginForm({
       const result = await signIn.social({
         provider: "google",
         callbackURL: "/dashboard",
+
       });
       if (result?.error) {
         toast.error("Google sign-in failed");
@@ -84,6 +80,7 @@ export function LoginForm({
     } finally {
       setIsLoading(false);
     }
+    toast.success("Login successful");
   };
 
   return (
@@ -137,7 +134,11 @@ export function LoginForm({
               <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
-              <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleGoogleSignIn}
+              >
                 Login with Google
               </Button>
             </div>
@@ -152,4 +153,4 @@ export function LoginForm({
       </Card>
     </div>
   );
-}
+  }

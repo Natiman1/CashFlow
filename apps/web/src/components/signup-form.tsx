@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { registerAction } from "@/actions/auth";
-import { signIn, useSession } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
@@ -45,7 +45,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [formError, setFormError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { data: user } = useSession();
 
   const {
     register,
@@ -55,9 +54,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     resolver: zodResolver(registerSchema),
   });
 
-  if (user) {
-    router.push("/dashboard");
-  }
+
 
   async function onSubmit(data: RegisterFormValues) {
     setIsLoading(true);
@@ -92,6 +89,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     } finally {
       setIsLoading(false);
     }
+    toast.success("Login successful");
   };
 
   return (

@@ -1,22 +1,16 @@
-"use client";
+
 
 import SummaryCard from "@/components/dashboard/summaryCard";
 import {
   dashboardSummary,
-  expenseByCategory,
   recentTransactions,
 } from "@/lib/mock/dashboard";
-import PieLegend from "@/components/dashboard/pieLagend";
+import { authIsRequired } from "@/lib/auth-utils";
+import ExpensesChart from "@/components/dashboard/expenses-chart";
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const COLORS = ["#10b981", "#60a5fa", "#f59e0b", "#ef4444"];
-const legendData = expenseByCategory.map((item, index) => ({
-  name: item.name,
-  value: item.value,
-  color: COLORS[index % COLORS.length],
-}));
-const page = () => {
+const page = async () => {
+  await authIsRequired();
   return (
     <section className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -68,7 +62,8 @@ const page = () => {
         </div>
 
         {/* Chart */}
-        <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1">
+        <ExpensesChart />
+        {/* <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1">
           <h2 className="mb-4 text-sm font-medium text-foreground">
             Expenses by category
           </h2>
@@ -93,7 +88,7 @@ const page = () => {
           </div>
 
           <PieLegend items={legendData} />
-        </div>
+        </div> */}
       </div>
     </section>
   );
