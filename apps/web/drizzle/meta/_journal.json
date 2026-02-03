@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1770114328588,
-      "tag": "0000_mighty_zodiak",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1770114878773,
-      "tag": "0001_careless_harrier",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1770136748646,
-      "tag": "0002_strange_meltdown",
+      "when": 1770138262501,
+      "tag": "0000_cooing_tomorrow_man",
       "breakpoints": true
     }
   ]

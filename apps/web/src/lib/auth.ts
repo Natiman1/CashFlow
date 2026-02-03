@@ -36,8 +36,9 @@ export const auth = betterAuth({
     sendOnSignIn: true,
   },
   advanced: {
-    // @ts-expect-error - generateId is required for UUIDs despite type definition
-    generateId: "uuid",
+    database: {
+      generateId: "uuid",
+    }
   },
 });
 
