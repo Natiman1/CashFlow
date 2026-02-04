@@ -1,10 +1,10 @@
-import { pgTable, text, timestamp, numeric, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, numeric } from "drizzle-orm/pg-core";
 import { user } from "./auth";
 
 export const budgets = pgTable("budgets", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: text("id").primaryKey(),
 
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
 

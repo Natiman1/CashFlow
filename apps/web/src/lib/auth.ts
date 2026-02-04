@@ -35,11 +35,7 @@ export const auth = betterAuth({
     sendOnSignUp: true,
     sendOnSignIn: true,
   },
-  advanced: {
-    database: {
-      generateId: "uuid",
-    }
-  },
+  
 });
 
 export async function getSession() {
