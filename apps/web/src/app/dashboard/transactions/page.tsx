@@ -1,18 +1,22 @@
-"use client";
 import TransactionsTable from "@/components/dashboard/transactionsTable";
 import AddTransactionModal from "@/components/dashboard/addTransactionModal";
-import { useState } from "react";
-import {
-  Transaction,
-  transactions as defaultTransactions,
-} from "@/lib/mock/transactions";
+import { getUserTransactions } from "@/actions/transactions";
+import { TransactionUI } from "@/lib/types/transactions-type";
+// import { useState } from "react";
 
-const TransactionsPage = () => {
-  const [transactions, setTransactions] =
-    useState<Transaction[]>(defaultTransactions);
-  const handleAddTransaction = (transaction: Transaction) => {
-    setTransactions((prev) => [...prev, transaction]);
-  };
+// import { Transaction } from "@/lib/types";
+// import { addTransaction } from "@/actions/transactions";
+
+const TransactionsPage = async () => {
+  const dbTransactions = await getUserTransactions()
+
+  const transactions: TransactionUI[] = dbTransactions.map((t) => ({
+    id: t.id,
+    description: t.description,
+    category: t.category,
+    amount: Number(t.amount),
+    date: t.date.toISOString().split("T")[0],
+  }))
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -20,7 +24,6 @@ const TransactionsPage = () => {
 
         <AddTransactionModal
           text="Add Transaction"
-          onAddTransaction={handleAddTransaction}
         />
       </div>
 

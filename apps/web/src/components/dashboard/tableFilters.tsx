@@ -1,5 +1,5 @@
 import { Table } from "@tanstack/react-table";
-import { Transaction } from "@/lib/mock/transactions";
+import { Transaction } from "@/lib/types/types";
 import { DatePicker } from "@/components/ui/datePicker";
 import { format } from "date-fns";
 import {
@@ -56,7 +56,6 @@ const TableFilters = ({ table, onAddTransaction }: Props) => {
             ?.setFilterValue(date ? format(date, "yyyy-MM") : undefined);
         }}
       />
-     
     </div>
   );
 };

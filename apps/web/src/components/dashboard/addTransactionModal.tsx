@@ -23,45 +23,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Transaction } from "@/lib/mock/transactions";
-
+import { addTransaction } from "@/actions/transactions";
 type AddTransactionModalProps = {
   text: string;
-  onAddTransaction: (transaction: Transaction) => void;
 };
 
-const AddTransactionModal = ({
-  text,
-  onAddTransaction,
-}: AddTransactionModalProps) => {
+const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<number | "">("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(""); 
+  const [category, setCategory] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // In a real app, we would validate and call an API or parent handler here
-    console.log({
+    addTransaction({
       amount: Number(amount),
-      description,
-      category,
-      date,
-    });
-
-   
-
-    onAddTransaction({
-      amount: Number(amount),
-      id: Math.random().toString(36).substr(2, 9),
       description,
       category,
       date: (date ?? new Date()).toISOString().split("T")[0],
     });
 
-     toast.success("Transaction added", {
+    toast.success("Transaction added", {
       description: "Transaction added successfully",
     });
 
@@ -103,8 +87,8 @@ const AddTransactionModal = ({
               <Input
                 id="description"
                 name="description"
-                value={Description}
-                onChange={(e) => setTitle(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder="e.g. Grocery Store"
               />
             </div>

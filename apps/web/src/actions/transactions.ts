@@ -5,6 +5,7 @@ import { transactions } from "@/db/schema/transactions";
 import { getUser } from "@/lib/auth-utils";
 import { z } from "zod";
 import { randomUUID } from "crypto";
+import { eq, desc } from "drizzle-orm";
 
 const transactionSchema = z.object({
   description: z.string().min(1),
@@ -29,4 +30,14 @@ export async function addTransaction(data: z.infer<typeof transactionSchema>) {
     amount: parsed.data.amount.toString(),
     date: new Date(parsed.data.date),
   });
+}
+
+export async function getUserTransactions() {
+  const user = await getUser()
+
+  return db
+    .select()
+    .from(transactions)
+    .where(eq(transactions.userId, user.id))
+    .orderBy(desc(transactions.date))
 }

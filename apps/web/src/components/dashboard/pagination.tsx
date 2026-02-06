@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Table } from "@tanstack/react-table";
-import { Transaction } from "@/lib/mock/transactions";
+import { Transaction } from "@/lib/types/types";
 
 import {
   Select,
@@ -26,8 +26,7 @@ const Pagination = ({ table }: Props) => {
         <ChevronLeft />
       </Button>
       <span className="text-popover-foreground">
-        {table.getState().pagination.pageIndex + 1} of{" "}
-        {table.getPageCount()}
+        {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
       </span>
       <Button
         onClick={() => table.nextPage()}

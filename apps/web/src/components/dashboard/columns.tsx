@@ -1,17 +1,17 @@
-import { Transaction } from "@/lib/mock/transactions";
+import { Transaction } from "@/lib/types/transactions-type";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 function filterByMonth(row: Row<Transaction>, columnId: string, value: string) {
-  if (!value) return true;
+  if (!value) return true;    
   return String(row.getValue(columnId) ?? "").startsWith(value);
 }
 
 const columns: ColumnDef<Transaction>[] = [
   {
-    accessorKey: "title",
+    accessorKey: "description",
     header: "Description",
-    size: 240,
+    size: 160,
     cell: (info) => info.getValue(),
   },
   {

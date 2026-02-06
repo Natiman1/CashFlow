@@ -11,7 +11,7 @@ import {
   ColumnFiltersState,
 } from "@tanstack/react-table";
 import { useState, useEffect } from "react";
-import { Transaction } from "@/lib/mock/transactions";
+import { Transaction } from "@/lib/types/transactions-type";
 
 import columns from "./columns";
 import Pagination from "./pagination";
