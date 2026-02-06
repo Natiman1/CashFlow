@@ -1,4 +1,3 @@
-
 import { redirect } from "next/navigation";
 import { auth } from "./auth";
 import { headers } from "next/headers";
@@ -28,3 +27,13 @@ export const authIsNotRequired = async () => {
   }
   return session;
 };
+
+export async function getUser() {
+  const session = await authSession()
+
+  if (!session?.user) {
+    throw new Error("Unauthorized")
+  }
+
+  return session.user
+}

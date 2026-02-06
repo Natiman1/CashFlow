@@ -36,8 +36,8 @@ const AddTransactionModal = ({
 }: AddTransactionModalProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<number | "">("");
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState(""); 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,7 +46,7 @@ const AddTransactionModal = ({
     // In a real app, we would validate and call an API or parent handler here
     console.log({
       amount: Number(amount),
-      title,
+      description,
       category,
       date,
     });
@@ -56,7 +56,7 @@ const AddTransactionModal = ({
     onAddTransaction({
       amount: Number(amount),
       id: Math.random().toString(36).substr(2, 9),
-      title,
+      description,
       category,
       date: (date ?? new Date()).toISOString().split("T")[0],
     });
@@ -68,7 +68,7 @@ const AddTransactionModal = ({
     // Close modal and reset form
     setOpen(false);
     setAmount("");
-    setTitle("");
+    setDescription("");
     setCategory("");
     setDate(new Date());
   };
@@ -103,7 +103,7 @@ const AddTransactionModal = ({
               <Input
                 id="description"
                 name="description"
-                value={title}
+                value={Description}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Grocery Store"
               />

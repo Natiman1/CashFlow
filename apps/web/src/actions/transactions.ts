@@ -1,0 +1,32 @@
+"use server";
+
+import { db } from "@/lib/db";
+import { transactions } from "@/db/schema/transactions";
+import { getUser } from "@/lib/auth-utils";
+import { z } from "zod";
+import { randomUUID } from "crypto";
+
+const transactionSchema = z.object({
+  description: z.string().min(1),
+  category: z.string().min(1),
+  amount: z.number(),
+  date: z.string(), // ISO string from client
+});
+
+export async function addTransaction(data: z.infer<typeof transactionSchema>) {
+  const user = await getUser();
+
+  const parsed = transactionSchema.safeParse(data);
+  if (!parsed.success) {
+    throw new Error("Invalid input");
+  }
+
+  await db.insert(transactions).values({
+    id: randomUUID(),
+    userId: user.id,
+    description: parsed.data.description,
+    category: parsed.data.category,
+    amount: parsed.data.amount.toString(),
+    date: new Date(parsed.data.date),
+  });
+}
