@@ -2,19 +2,14 @@
 
 import { db } from "@/lib/db";
 import { transactions } from "@/db/schema/transactions";
+import {Transaction, transactionSchema} from "@/lib/types/transactions-type"
 import { getUser } from "@/lib/auth-utils";
-import { z } from "zod";
 import { randomUUID } from "crypto";
 import { eq, desc } from "drizzle-orm";
 
-const transactionSchema = z.object({
-  description: z.string().min(1),
-  category: z.string().min(1),
-  amount: z.number(),
-  date: z.string(), // ISO string from client
-});
 
-export async function addTransaction(data: z.infer<typeof transactionSchema>) {
+
+export async function addTransaction(data: Transaction) {
   const user = await getUser();
 
   const parsed = transactionSchema.safeParse(data);
@@ -26,7 +21,7 @@ export async function addTransaction(data: z.infer<typeof transactionSchema>) {
     id: randomUUID(),
     userId: user.id,
     description: parsed.data.description,
-    category: parsed.data.category,
+    categoryId: parsed.data.category,
     amount: parsed.data.amount.toString(),
     date: new Date(parsed.data.date),
   });

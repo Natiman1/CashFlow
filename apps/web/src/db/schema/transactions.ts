@@ -1,5 +1,6 @@
 import { pgTable, text, timestamp, numeric } from "drizzle-orm/pg-core";
 import { user } from "./auth";
+import { categories } from "./categories";
 
 export const transactions = pgTable("transactions", {
   id: text("id").primaryKey(),
@@ -10,7 +11,9 @@ export const transactions = pgTable("transactions", {
 
   description: text("description").notNull(),
 
-  category: text("category").notNull(),
+  categoryId: text("category_id")
+    .notNull()
+    .references(() => categories.id),
 
   amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
 
