@@ -1,3 +1,4 @@
+CREATE TYPE "public"."category_type" AS ENUM('income', 'expense');--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -59,7 +60,8 @@ CREATE TABLE "categories" (
 	"id" text PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
 	"name" text NOT NULL,
-	"type" text NOT NULL,
+	"type" "category_type" NOT NULL,
+	"is_default" boolean DEFAULT false,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint

@@ -12,15 +12,15 @@ export default async function CategoriesPage() {
         <AddCategoryModal />
       </div>
 
-      <ul className="space-y-2">
+      <ul className="space-y-2 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 ">
         {categories.map((c) => (
           <li
             key={c.id}
-            className="flex justify-between border rounded-md p-3"
+            className="flex justify-between items-center flex-wrap border rounded-md p-3"
           >
             <span>{c.name}</span>
             <span className="text-sm text-muted-foreground">
-              {c.type}
+              {c.type.charAt(0).toUpperCase() + c.type.slice(1)}
             </span>
           </li>
         ))}

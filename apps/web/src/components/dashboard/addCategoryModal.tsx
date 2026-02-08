@@ -28,8 +28,8 @@ const AddCategoryModal = () => {
       <DialogTrigger asChild>
         <Button>Add Category</Button>
       </DialogTrigger>
-      <form onSubmit={handleSubmit}>
         <DialogContent>
+      <form onSubmit={handleSubmit}>
         <DialogHeader>
           <DialogTitle>Add Category</DialogTitle>
           <DialogDescription>
@@ -37,12 +37,12 @@ const AddCategoryModal = () => {
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-4 gap-4 py-4">
+          <div className="col-span-2 flex flex-col gap-2">
             <Label htmlFor="name">Name</Label>
             <Input id="name" placeholder="e.g. Groceries" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
-          <div className="col-span-2">
+          <div className="col-span-2 flex flex-col gap-2">
             <Label htmlFor="type">Type</Label>
             <Select onValueChange={(value) => setType(value)} value={type}>
               <SelectTrigger>
@@ -61,8 +61,8 @@ const AddCategoryModal = () => {
           </DialogClose>
           <Button type="submit">Add Category</Button>
         </DialogFooter>
-      </DialogContent>
       </form>
+      </DialogContent>
     </Dialog>
   )
 }

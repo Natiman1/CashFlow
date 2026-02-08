@@ -6,6 +6,7 @@ import {
   BarChart3,
   Settings,
   Wallet,
+  Folders,
 } from "lucide-react";
 import { useSidebar } from "@/hooks/SidebarContext";
 
@@ -19,6 +20,11 @@ const navItems = [
     label: "Transactions",
     href: "/dashboard/transactions",
     icon: CreditCard,
+  },
+  {
+    label: "Categories",
+    href: "/dashboard/categories",
+    icon:  Folders,
   },
   {
     label: "Budgets",

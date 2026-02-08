@@ -1,5 +1,5 @@
 {
-  "id": "40268314-efc2-43dd-bcf7-50a2a6af3959",
+  "id": "fd3264e2-9d7b-495e-bfd4-42665d8ab064",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -447,9 +447,17 @@
         },
         "type": {
           "name": "type",
-          "type": "text",
+          "type": "category_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_default": {
+          "name": "is_default",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "created_at": {
           "name": "created_at",
@@ -565,7 +573,16 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.category_type": {
+      "name": "category_type",
+      "schema": "public",
+      "values": [
+        "income",
+        "expense"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
