@@ -23,7 +23,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+
 import { addTransaction } from "@/actions/transactions";
+import { getUserCategories } from "@/actions/categories";
+import { useEffect } from "react";
+
 type AddTransactionModalProps = {
   text: string;
 };
@@ -32,16 +36,30 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<number | "">("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    [],
+  );
+
+  useEffect(() => {
+    if (open) {
+      getUserCategories().then((res) => setCategories(res));
+    }
+  }, [open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!categoryId) {
+      toast.error("Please select a category");
+      return;
+    }
+
     addTransaction({
       amount: Number(amount),
       description,
-      category,
+      categoryId,
       date: (date ?? new Date()).toISOString().split("T")[0],
     });
 
@@ -53,7 +71,7 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
     setOpen(false);
     setAmount("");
     setDescription("");
-    setCategory("");
+    setCategoryId("");
     setDate(new Date());
   };
 
@@ -94,17 +112,16 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
             </div>
             <div className="grid gap-3">
               <Label>Category</Label>
-              <Select value={category} onValueChange={setCategory}>
+              <Select value={categoryId} onValueChange={setCategoryId}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Food">Food</SelectItem>
-                  <SelectItem value="Transport">Transport</SelectItem>
-                  <SelectItem value="Rent">Rent</SelectItem>
-                  <SelectItem value="Utilities">Utilities</SelectItem>
-                  <SelectItem value="Entertainment">Entertainment</SelectItem>
-                  <SelectItem value="Income">Income</SelectItem>
+                  {categories.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

@@ -1,9 +1,9 @@
 import { exportToCSV } from "@/lib/exportCsv";
-import { Transaction } from "@/lib/types/transactions-type";
+import { TransactionUI } from "@/lib/types/transactions-type";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 
-export default function ExportToCsv({ table }: { table: Table<Transaction> }) {
+export default function ExportToCsv({ table }: { table: Table<TransactionUI> }) {
   const filteredRows = table
     .getFilteredRowModel()
     .rows.map((row) => row.original);

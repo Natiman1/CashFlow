@@ -11,7 +11,7 @@ import {
   ColumnFiltersState,
 } from "@tanstack/react-table";
 import { useState, useEffect } from "react";
-import { Transaction } from "@/lib/types/transactions-type";
+import { TransactionUI } from "@/lib/types/transactions-type";
 
 import columns from "./columns";
 import Pagination from "./pagination";
@@ -19,7 +19,7 @@ import TableFilters from "./tableFilters";
 import ExportToCsv from "./exportToCvs";
 
 type Props = {
-  data: Transaction[];
+  data: TransactionUI[];
 };
 
 export default function TransactionsTable({ data }: Props) {
@@ -27,13 +27,13 @@ export default function TransactionsTable({ data }: Props) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const [transactions, setTransactions] = useState<Transaction[]>(data);
+  const [transactions, setTransactions] = useState<TransactionUI[]>(data);
 
   useEffect(() => {
     setTransactions(data);
   }, [data]);
 
-  const handleAddTransaction = (transaction: Transaction) => {
+  const handleAddTransaction = (transaction: TransactionUI) => {
     setTransactions((prev) => [...prev, transaction]);
   };
 

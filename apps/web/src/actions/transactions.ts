@@ -2,14 +2,18 @@
 
 import { db } from "@/lib/db";
 import { transactions } from "@/db/schema/transactions";
-import {Transaction, transactionSchema} from "@/lib/types/transactions-type"
+import { categories } from "@/db/schema/categories";
 import { getUser } from "@/lib/auth-utils";
-import { randomUUID } from "crypto";
+import { transactionSchema } from "@/lib/types/transactions-type";
 import { eq, desc } from "drizzle-orm";
+import { randomUUID } from "crypto";
+import { z } from "zod";
 
+function normalizeAmount(amount: number, type: "income" | "expense") {
+  return type === "expense" ? -Math.abs(amount) : Math.abs(amount);
+}
 
-
-export async function addTransaction(data: Transaction) {
+export async function addTransaction(data: z.infer<typeof transactionSchema>) {
   const user = await getUser();
 
   const parsed = transactionSchema.safeParse(data);
@@ -17,22 +21,44 @@ export async function addTransaction(data: Transaction) {
     throw new Error("Invalid input");
   }
 
+  // 1️⃣ Load category and verify ownership
+  const category = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.id, parsed.data.categoryId))
+    .then((res) => res[0]);
+
+  if (!category || category.userId !== user.id) {
+    throw new Error("Category not found");
+  }
+
+  // 2️⃣ Normalize amount
+  const normalizedAmount = normalizeAmount(parsed.data.amount, category.type);
+
+  // 3️⃣ Insert transaction
   await db.insert(transactions).values({
     id: randomUUID(),
     userId: user.id,
+    categoryId: category.id,
     description: parsed.data.description,
-    categoryId: parsed.data.category,
-    amount: parsed.data.amount.toString(),
+    amount: normalizedAmount.toString(),
     date: new Date(parsed.data.date),
   });
 }
 
 export async function getUserTransactions() {
-  const user = await getUser()
+  const user = await getUser();
 
   return db
-    .select()
+    .select({
+      id: transactions.id,
+      description: transactions.description,
+      amount: transactions.amount,
+      date: transactions.date,
+      category: categories.name,
+    })
     .from(transactions)
+    .leftJoin(categories, eq(transactions.categoryId, categories.id))
     .where(eq(transactions.userId, user.id))
-    .orderBy(desc(transactions.date))
+    .orderBy(desc(transactions.date));
 }

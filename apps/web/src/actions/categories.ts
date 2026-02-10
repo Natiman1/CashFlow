@@ -6,7 +6,6 @@ import { categories } from "@/db/schema/categories";
 import { getUser } from "@/lib/auth-utils";
 import { categorySchema } from "@/lib/types/category-type";
 import { defaultCategories } from "@/db/schema/categories";
-import { revalidatePath } from "next/cache";
 import { randomUUID } from "crypto";
 
 export async function createCategory(data: unknown) {
@@ -22,24 +21,26 @@ export async function createCategory(data: unknown) {
     userId: user.id,
     ...parsed.data,
   });
-
-  revalidatePath("/dashboard/categories");
 }
 
 export async function getUserCategories() {
   const user = await getUser();
- 
-  const userCategories = await db.select().from(categories).where(eq(categories.userId, user.id));
+
+  const userCategories = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.userId, user.id));
 
   if (userCategories.length === 0) {
-    await db.insert(categories).values(
-      defaultCategories.map((c) => ({
-        id: randomUUID(),
-        userId: user.id,
-        ...c,
-      }))
-    );
+    const seededCategories = defaultCategories.map((c) => ({
+      id: randomUUID(),
+      userId: user.id,
+      ...c,
+    }));
+
+    await db.insert(categories).values(seededCategories);
+    return seededCategories;
   }
 
-  return db.select().from(categories).where(eq(categories.userId, user.id));
+  return userCategories;
 }
