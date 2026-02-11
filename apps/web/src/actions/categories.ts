@@ -1,5 +1,6 @@
 "use server";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { categories } from "@/db/schema/categories";
@@ -43,4 +44,14 @@ export async function getUserCategories() {
   }
 
   return userCategories;
+}
+
+export async function deleteCategory(id: string) {
+  try {
+    await db.delete(categories).where(eq(categories.id, id));
+    revalidatePath("/dashboard/categories");
+  } catch (error) {
+    console.error("Delete category error:", error);
+    throw new Error("Failed to delete category");
+  }
 }

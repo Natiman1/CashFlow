@@ -8,6 +8,7 @@ import { transactionSchema } from "@/lib/types/transactions-type";
 import { eq, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 function normalizeAmount(amount: number, type: "income" | "expense") {
   return type === "expense" ? -Math.abs(amount) : Math.abs(amount);
@@ -44,21 +45,37 @@ export async function addTransaction(data: z.infer<typeof transactionSchema>) {
     amount: normalizedAmount.toString(),
     date: new Date(parsed.data.date),
   });
+  revalidatePath("/dashboard/transactions");
 }
 
 export async function getUserTransactions() {
   const user = await getUser();
 
-  return db
-    .select({
-      id: transactions.id,
-      description: transactions.description,
-      amount: transactions.amount,
-      date: transactions.date,
-      category: categories.name,
-    })
-    .from(transactions)
-    .leftJoin(categories, eq(transactions.categoryId, categories.id))
-    .where(eq(transactions.userId, user.id))
-    .orderBy(desc(transactions.date));
+  try {
+    return await db
+      .select({
+        id: transactions.id,
+        description: transactions.description,
+        amount: transactions.amount,
+        date: transactions.date,
+        category: categories.name,
+      })
+      .from(transactions)
+      .leftJoin(categories, eq(transactions.categoryId, categories.id))
+      .where(eq(transactions.userId, user.id))
+      .orderBy(desc(transactions.date));
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch transactions");
+  }
+}
+
+export async function deleteTransaction(id: string) {
+  try {
+    await db.delete(transactions).where(eq(transactions.id, id));
+    revalidatePath("/dashboard/transactions");
+  } catch (error) {
+    console.error("Delete transaction error:", error);
+    throw new Error("Failed to delete transaction");
+  }
 }

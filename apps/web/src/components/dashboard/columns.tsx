@@ -1,6 +1,7 @@
 import { TransactionUI } from "@/lib/types/transactions-type";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+import DeleteTransaction from "./deleteTransaction";
 
 function filterByMonth(
   row: Row<TransactionUI>,
@@ -62,6 +63,15 @@ const columns: ColumnDef<TransactionUI>[] = [
     ),
     filterFn: filterByMonth,
   },
+  {
+    header: "Actions",
+    id: "actions",
+    size: 10,
+    cell: ({ row }) => {
+      const transaction = row.original;
+      return <DeleteTransaction id={transaction.id} />;
+    },
+  }
 ];
 
 export default columns;

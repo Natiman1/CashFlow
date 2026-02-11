@@ -1,9 +1,11 @@
 import { getUserCategories } from "@/actions/categories";
-import AddCategoryModal from "@/components/dashboard/addCategoryModal";
-import { Trash2 } from "lucide-react";
+import AddCategoryModal from "@/components/categories/addCategoryModal";
+
+import DeleteCategory from "@/components/categories/deleteCategoy";
 
 export default async function CategoriesPage() {
   const categories = await getUserCategories();
+  
 
   return (
     <div className="space-y-6">
@@ -25,10 +27,7 @@ export default async function CategoriesPage() {
             </span>
             </div>
             
-            <Trash2
-              className="cursor-pointer text-red-500"
-              size={16}
-            />
+            <DeleteCategory id={c.id} />
           </li>
         ))}
       </ul>

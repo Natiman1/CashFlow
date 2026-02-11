@@ -13,7 +13,7 @@ export const transactions = pgTable("transactions", {
 
   categoryId: text("category_id")
     .notNull()
-    .references(() => categories.id),
+    .references(() => categories.id, { onDelete: "cascade" }),
 
   amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
 
