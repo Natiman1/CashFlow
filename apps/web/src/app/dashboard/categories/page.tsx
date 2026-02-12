@@ -5,7 +5,6 @@ import DeleteCategory from "@/components/categories/deleteCategoy";
 
 export default async function CategoriesPage() {
   const categories = await getUserCategories();
-  
 
   return (
     <div className="space-y-6">
@@ -20,13 +19,13 @@ export default async function CategoriesPage() {
             key={c.id}
             className="flex items-center justify-between border rounded-md p-3"
           >
-            <div className="flex items-center justify-between flex-wrap">
+            <div className="flex flex-1 items-center justify-between flex-wrap">
               <span>{c.name}</span>
-            <span className="text-sm text-muted-foreground mr-4">
-              {c.type.charAt(0).toUpperCase() + c.type.slice(1)}
-            </span>
+              <span className="text-sm text-muted-foreground mr-4">
+                {c.type.charAt(0).toUpperCase() + c.type.slice(1)}
+              </span>
             </div>
-            
+
             <DeleteCategory id={c.id} />
           </li>
         ))}

@@ -17,12 +17,16 @@ import columns from "./columns";
 import Pagination from "./pagination";
 import TableFilters from "./tableFilters";
 import ExportToCsv from "./exportToCvs";
+import { Category } from "@/lib/types/category-type";
 
 type Props = {
   data: TransactionUI[];
+  categories: Category[];
 };
 
-export default function TransactionsTable({ data }: Props) {
+export default function TransactionsTable({ data, categories }: Props) {
+  "use no memo";
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -32,10 +36,6 @@ export default function TransactionsTable({ data }: Props) {
   useEffect(() => {
     setTransactions(data);
   }, [data]);
-
-  const handleAddTransaction = (transaction: TransactionUI) => {
-    setTransactions((prev) => [...prev, transaction]);
-  };
 
   const table = useReactTable({
     data: transactions,
@@ -61,7 +61,7 @@ export default function TransactionsTable({ data }: Props) {
   return (
     <>
       <div className="flex flex-wrap items-start justify-between">
-        <TableFilters table={table} onAddTransaction={handleAddTransaction} />
+        <TableFilters table={table} categories={categories} />
         <ExportToCsv table={table} />
       </div>
 

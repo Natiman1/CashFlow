@@ -12,3 +12,9 @@ export const categorySchema = z.object({
 })
 
 export type CategoryInput = z.infer<typeof categorySchema>
+
+export type Category = {
+  id: string;
+  name: string;
+  type: string;
+};

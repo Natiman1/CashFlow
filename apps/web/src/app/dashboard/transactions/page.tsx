@@ -2,9 +2,11 @@ import TransactionsTable from "@/components/dashboard/transactionsTable";
 import AddTransactionModal from "@/components/dashboard/addTransactionModal";
 import { getUserTransactions } from "@/actions/transactions";
 import { TransactionUI } from "@/lib/types/transactions-type";
+import { getUserCategories } from "@/actions/categories";
 
 const TransactionsPage = async () => {
   const dbTransactions = await getUserTransactions();
+  const categories = await getUserCategories();
 
   const transactions: TransactionUI[] = dbTransactions.map((t) => ({
     id: t.id,
@@ -21,7 +23,7 @@ const TransactionsPage = async () => {
         <AddTransactionModal text="Add Transaction" />
       </div>
 
-      <TransactionsTable data={transactions} />
+      <TransactionsTable data={transactions} categories={categories} />
     </div>
   );
 };

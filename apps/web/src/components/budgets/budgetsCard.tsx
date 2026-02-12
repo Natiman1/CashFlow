@@ -5,7 +5,7 @@ type BudgetCardProps = {
   category: string;
   limit: number;
   spent: number;
-  onEdit: () => void
+  onEdit: () => void;
 };
 
 export default function BudgetCard({
@@ -21,23 +21,33 @@ export default function BudgetCard({
   if (percentage >= 80 && percentage < 100) color = "bg-amber-500";
   if (percentage >= 100) color = "bg-red-500";
 
+  const overBudget = () => {
+    const overBudgetAmount = Number(spent.toFixed(2)) - Number(limit.toFixed(2));
+    if (overBudgetAmount > 0) {
+      return `Over budget by ${overBudgetAmount.toFixed(2)}`;
+    } else if (overBudgetAmount === 0 && spent > 0 && spent >= limit) {
+      return "Reached budget limit";
+    } else {
+      return "";
+    }
+  };
+  
   return (
-    <div className="rounded-lg border bg-card p-4 space-y-3 cursor-pointer" onClick={onEdit}>
+    <div
+      className="rounded-lg border bg-card p-4 space-y-3 cursor-pointer"
+      onClick={onEdit}
+    >
       <Field className="w-full max-w-sm">
         <FieldLabel htmlFor="category">
           <span>{category}</span>
           <span className="ml-auto">{percentage}%</span>
         </FieldLabel>
         <Progress value={percentage} indicatorClassName={color} id="catagory" />
-        <FieldLabel >
+        <FieldLabel>
           <span className="text-xs text-muted-foreground">
-            ${spent} / ${limit}
+            ${spent.toFixed(2)} / ${limit.toFixed(2)}
           </span>
-          {percentage >= 100 && (
-            <p className="text-xs text-red-500">
-             Over budget by ${(spent - limit).toFixed(2)}
-            </p>
-          )}
+          <span className="text-xs text-red-500">{overBudget()}</span>
         </FieldLabel>
       </Field>
     </div>

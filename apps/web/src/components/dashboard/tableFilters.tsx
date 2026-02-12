@@ -1,5 +1,5 @@
 import { Table } from "@tanstack/react-table";
-import { Transaction } from "@/lib/types/types";
+import { TransactionUI } from "@/lib/types/transactions-type";
 import { DatePicker } from "@/components/ui/datePicker";
 import { format } from "date-fns";
 import {
@@ -9,20 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
+import { Category } from "@/lib/types/category-type";
 type Props = {
-  table: Table<Transaction>;
-  onAddTransaction: (transaction: Transaction) => void;
+  table: Table<TransactionUI>;
+  categories: Category[];
 };
 
-const TableFilters = ({ table, onAddTransaction }: Props) => {
+const TableFilters =  ({ table, categories }: Props) => {
   const filterValue = table.getColumn("date")?.getFilterValue() as string;
   const date = filterValue ? new Date(filterValue + "-01") : undefined;
-
-  const handleAddTransaction = (transaction: Transaction) => {
-    onAddTransaction(transaction);
-    toast.success("Transaction added successfully");
-  };
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -41,11 +36,11 @@ const TableFilters = ({ table, onAddTransaction }: Props) => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All categories</SelectItem>
-          <SelectItem value="Food">Food</SelectItem>
-          <SelectItem value="Transport">Transport</SelectItem>
-          <SelectItem value="Rent">Rent</SelectItem>
-          <SelectItem value="Utilities">Utilities</SelectItem>
-          <SelectItem value="Entertainment">Entertainment</SelectItem>
+          {categories.map((category) => (
+            <SelectItem key={category.id} value={category.name}>
+              {category.name}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
       <DatePicker

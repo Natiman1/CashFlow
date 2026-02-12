@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { auth } from "./auth";
 import { headers } from "next/headers";
+import { cache } from "react";
 
-export const authSession = async () => {
+export const authSession = cache(async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -10,7 +11,7 @@ export const authSession = async () => {
     return null;
   }
   return session;
-};
+});
 
 export const authIsRequired = async () => {
   const session = await authSession();
@@ -28,12 +29,12 @@ export const authIsNotRequired = async () => {
   return session;
 };
 
-export async function getUser() {
-  const session = await authSession()
+export const getUser = cache(async () => {
+  const session = await authSession();
 
   if (!session?.user) {
-    throw new Error("Unauthorized")
+    throw new Error("Unauthorized");
   }
 
-  return session.user
-}
+  return session.user;
+});
