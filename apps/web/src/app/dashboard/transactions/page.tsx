@@ -2,10 +2,6 @@ import TransactionsTable from "@/components/dashboard/transactionsTable";
 import AddTransactionModal from "@/components/dashboard/addTransactionModal";
 import { getUserTransactions } from "@/actions/transactions";
 import { TransactionUI } from "@/lib/types/transactions-type";
-// import { useState } from "react";
-
-// import { Transaction } from "@/lib/types";
-// import { addTransaction } from "@/actions/transactions";
 
 const TransactionsPage = async () => {
   const dbTransactions = await getUserTransactions();

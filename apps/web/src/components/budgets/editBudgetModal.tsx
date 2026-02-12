@@ -1,17 +1,46 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { Budget } from "@/lib/mock/budgets";
+import type { BudgetWithUsage } from "@/lib/types/budgets-type";
+import { upsertBudget } from "@/actions/budgets";
+import { toast } from "sonner";
 
 type Props = {
-  budget: Budget;
+  budget: BudgetWithUsage;
   onClose: () => void;
-  onSave: (category: string, limit: number) => void;
+  onSuccess?: () => void;
 };
 
-export default function EditBudgetModal({ budget, onClose, onSave }: Props) {
+export default function EditBudgetModal({ budget, onClose, onSuccess }: Props) {
   const [limit, setLimit] = useState(budget.limit);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSave() {
+    setIsSubmitting(true);
+    try {
+      await upsertBudget({
+        id: budget.budgetId,
+        categoryId: budget.categoryId,
+        limit: limit,
+        month: budget.month,
+        year: budget.year,
+      });
+      toast.success("Budget updated");
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      toast.error("Failed to update budget");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <Dialog open onOpenChange={onClose}>
@@ -27,15 +56,16 @@ export default function EditBudgetModal({ budget, onClose, onSave }: Props) {
               type="number"
               value={limit}
               onChange={(e) => setLimit(Number(e.target.value))}
+              required
             />
           </div>
 
           <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" onClick={onClose} disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button onClick={() => onSave(budget.category, limit)}>
-              Save
+            <Button onClick={handleSave} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </div>
         </div>
