@@ -124,6 +124,23 @@ export async function getBudgetsWithUsage(
   }));
 }
 
+export async function getBudgetById(id: string) {
+  const user = await getUser();
+  return db
+    .select()
+    .from(budgets)
+    .where(and(eq(budgets.id, id), eq(budgets.userId, user.id)))
+    .then((r) => r[0]);
+}
+
+export async function deleteBudget(id: string) {
+  const user = await getUser();
+  await db
+    .delete(budgets)
+    .where(and(eq(budgets.id, id), eq(budgets.userId, user.id)));
+  revalidatePath("/dashboard/budgets");
+}
+
 export async function getUserCategories() {
   const user = await getUser();
   return db.select().from(categories).where(eq(categories.userId, user.id));

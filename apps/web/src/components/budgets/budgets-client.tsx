@@ -5,6 +5,8 @@ import BudgetCard from "@/components/budgets/budgetsCard";
 import type { BudgetWithUsage } from "@/lib/types/budgets-type";
 import EditBudgetModal from "@/components/budgets/editBudgetModal";
 import AddBudgetLimit from "@/components/budgets/addBudgetLimit";
+import { deleteBudget } from "@/actions/budgets";
+import { toast } from "sonner";
 
 type Props = {
   initialBudgets: BudgetWithUsage[];
@@ -15,6 +17,20 @@ export default function BudgetsClient({ initialBudgets, categories }: Props) {
   const [selectedBudget, setSelectedBudget] = useState<BudgetWithUsage | null>(
     null,
   );
+
+  const handleDelete =async () => {
+    try {
+      const budgets = initialBudgets.map((budget) => (
+        budget.budgetId
+      ))
+      await deleteBudget(budgets[0])
+      toast.success("Budget deleted successfully")
+    
+    } catch (error) {
+       toast.error("Failed to delete budget");
+      console.error(error);
+    }
+  }
 
   return (
     <section className="space-y-6">
@@ -37,6 +53,7 @@ export default function BudgetsClient({ initialBudgets, categories }: Props) {
             limit={budget.limit}
             spent={budget.spent}
             onEdit={() => setSelectedBudget(budget)}
+            onDelete={handleDelete}
           />
         ))}
         {initialBudgets.length === 0 && (

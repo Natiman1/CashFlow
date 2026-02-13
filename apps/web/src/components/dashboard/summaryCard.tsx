@@ -2,7 +2,7 @@ type Props = {
   label: string;
   value: string;
 };
-const summaryCard = ({ label, value }: Props) => {
+const SummaryCard = ({ label, value }: Props) => {
   return (
     <div className="rounded-lg bg-card p-4 shadow-sm">
       <p className="text-sm text-muted-foreground">{label}</p>
@@ -11,4 +11,4 @@ const summaryCard = ({ label, value }: Props) => {
   );
 };
 
-export default summaryCard;
+export default SummaryCard;
