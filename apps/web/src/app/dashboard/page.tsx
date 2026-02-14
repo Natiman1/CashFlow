@@ -86,7 +86,8 @@ const page = async () => {
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
           <h2 className="text-lg font-semibold">Recent Transactions</h2>
-          <table className="w-full text-sm border border-gray-200 rounded-lg">
+          <div className="border border-gray-400 rounded-lg">
+            <table className="w-full text-sm ">
             <thead>
               <tr className="border-b bg-muted/50 transition-colors">
                 <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
@@ -104,7 +105,7 @@ const page = async () => {
               </tr>
             </thead>
             <tbody className="[&_tr:last-child]:border-0">
-              {formattedTransactions.slice(0, 7).map((tx) => (
+              {formattedTransactions.slice(0, 6).map((tx) => (
                 <tr
                   key={tx.id}
                   className="border-b transition-colors hover:bg-muted/50"
@@ -134,6 +135,8 @@ const page = async () => {
               ))}
             </tbody>
           </table>
+          </div>
+          
         </div>
         <div className="space-y-4">
           <h2 className="text-lg font-semibold">Active Budgets</h2>

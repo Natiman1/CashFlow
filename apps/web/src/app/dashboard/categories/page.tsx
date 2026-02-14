@@ -1,35 +1,26 @@
 import { getUserCategories } from "@/actions/categories";
 import AddCategoryModal from "@/components/categories/addCategoryModal";
-
-import DeleteCategory from "@/components/categories/deleteCategoy";
+import CategoriesList from "@/components/categories/categoriesList";
 
 export default async function CategoriesPage() {
   const categories = await getUserCategories();
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Categories</h1>
+    <div className="space-y-8 p-1">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Categories</h1>
+          <p className="text-sm text-muted-foreground">
+            Manage your income and expense categories to track your spending
+            better.
+          </p>
+        </div>
         <AddCategoryModal />
       </div>
 
-      <ul className="space-y-2 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 ">
-        {categories.map((c) => (
-          <li
-            key={c.id}
-            className="flex items-center justify-between border rounded-md p-3"
-          >
-            <div className="flex flex-1 items-center justify-between flex-wrap">
-              <span>{c.name}</span>
-              <span className="text-sm text-muted-foreground mr-4">
-                {c.type.charAt(0).toUpperCase() + c.type.slice(1)}
-              </span>
-            </div>
-
-            <DeleteCategory id={c.id} />
-          </li>
-        ))}
-      </ul>
+      <div className="space-y-4">
+        <CategoriesList initialCategories={categories} />
+      </div>
     </div>
   );
 }

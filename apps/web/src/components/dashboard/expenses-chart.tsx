@@ -16,8 +16,21 @@ const ExpensesChart = ({ data }: { data: ExpenseData[] }) => {
     color: COLORS[index % COLORS.length],
   }));
 
+  if (data.length === 0) {
+    return (
+      <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1 border border-gray-400">
+        <h2 className="mb-4 text-sm font-medium text-foreground">
+          Expenses by category
+        </h2>
+        <p className="text-sm text-muted-foreground h-full flex items-center justify-center">
+          No expenses yet.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1">
+    <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1 border border-gray-400">
       <h2 className="mb-4 text-sm font-medium text-foreground">
         Expenses by category
       </h2>
