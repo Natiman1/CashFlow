@@ -1,99 +1,81 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 
-// #region Sample data
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+interface BarChartData {
+  name: string;
+  income: number;
+  expense: number;
+}
 
-// #endregion
-const SimpleBarChart = () => {
+const BarGraph = ({ data }: { data: BarChartData[] }) => {
   return (
-    <BarChart
-      style={{
-        width: "100%",
-        maxWidth: "700px",
-        maxHeight: "70vh",
-        aspectRatio: 1.618,
-      }}
-      responsive
-      data={data}
-      margin={{
-        top: 5,
-        right: 0,
-        left: 0,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis width="auto" />
-      <Tooltip />
-      <Legend />
-      <Bar
-        dataKey="pv"
-        fill="#8884d8"
-        activeBar={{ fill: "pink", stroke: "blue" }}
-        radius={[10, 10, 0, 0]}
-      />
-      <Bar
-        dataKey="uv"
-        fill="#82ca9d"
-        activeBar={{ fill: "gold", stroke: "purple" }}
-        radius={[10, 10, 0, 0]}
-      />
-    </BarChart>
+    <div className="w-full h-75 sm:h-100">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-sm font-medium text-foreground">
+          Income vs Expenses
+        </h2>
+        <div className="flex gap-4">
+          <div className="flex items-center gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            <span className="text-xs text-muted-foreground">Income</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+            <span className="text-xs text-muted-foreground">Expenses</span>
+          </div>
+        </div>
+      </div>
+      <BarChart
+        width={700}
+        height={300}
+        data={data}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        margin={{
+          top: 5,
+          right: 10,
+          left: -20,
+          bottom: 0,
+        }}
+      >
+        <XAxis
+          dataKey="name"
+          axisLine={false}
+          tickLine={false}
+          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+          dy={10}
+        />
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+        />
+        <Tooltip
+          cursor={{ fill: "hsl(var(--muted))", opacity: 0.2 }}
+          contentStyle={{
+            border: "1px solid gray-200",
+            borderRadius: "8px",
+            fontSize: "12px",
+          }}
+        />
+        <Bar
+          dataKey="income"
+          fill="#10b981"
+          radius={[4, 4, 0, 0]}
+          barSize={20}
+        />
+        <Bar
+          dataKey="expense"
+          fill="#f59e0b"
+          radius={[4, 4, 0, 0]}
+          barSize={20}
+        />
+      </BarChart>
+    </div>
   );
 };
 
-export default SimpleBarChart;
+export default BarGraph;

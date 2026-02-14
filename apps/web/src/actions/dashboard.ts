@@ -80,6 +80,50 @@ export async function getDashboardData() {
     spent: Math.abs(Number(row.spent)),
   }));
 
+  // 4️⃣ Monthly Trend (Last 6 months)
+  const monthlyTrendRaw = await db.execute<{
+    month: number;
+    year: number;
+    income: string;
+    expense: string;
+  }>(sql`
+    SELECT
+      EXTRACT(MONTH FROM t.date) AS month,
+      EXTRACT(YEAR FROM t.date) AS year,
+      SUM(CASE WHEN c.type = 'income' THEN t.amount::numeric ELSE 0 END) AS income,
+      SUM(CASE WHEN c.type = 'expense' THEN t.amount::numeric ELSE 0 END) AS expense
+    FROM transactions t
+    JOIN categories c ON t.category_id = c.id
+    WHERE t.user_id = ${user.id}
+      AND t.date >= CURRENT_DATE - INTERVAL '6 months'
+    GROUP BY year, month
+    ORDER BY year DESC, month DESC
+    LIMIT 6
+  `);
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const monthlyTrend = monthlyTrendRaw
+    .map((row) => ({
+      name: monthNames[Number(row.month) - 1],
+      income: Number(row.income),
+      expense: Math.abs(Number(row.expense)),
+    }))
+    .reverse();
+
   const totalIncome = Number(totals[0]?.income ?? 0);
   const totalExpense = Number(totals[0]?.expense ?? 0);
 
@@ -89,5 +133,6 @@ export async function getDashboardData() {
     balance: totalIncome + totalExpense,
     expenseByCategory,
     budgets: budgetsWithUsage,
+    monthlyTrend,
   };
 }

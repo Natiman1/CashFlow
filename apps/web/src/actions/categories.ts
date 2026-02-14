@@ -22,6 +22,8 @@ export async function createCategory(data: unknown) {
     userId: user.id,
     ...parsed.data,
   });
+
+  revalidatePath("/dashboard/categories");
 }
 
 export async function getUserCategories() {
@@ -32,15 +34,28 @@ export async function getUserCategories() {
     .from(categories)
     .where(eq(categories.userId, user.id));
 
+  // Only seed if zero categories exist for this user
   if (userCategories.length === 0) {
     const seededCategories = defaultCategories.map((c) => ({
       id: randomUUID(),
       userId: user.id,
-      ...c,
+      name: c.name,
+      type: c.type,
+      isDefault: true,
     }));
 
-    await db.insert(categories).values(seededCategories);
-    return seededCategories;
+    try {
+      await db.insert(categories).values(seededCategories);
+      return seededCategories;
+    } catch (error) {
+      // If a race occurred, just fetch again
+      return await db
+        .select()
+        .from(categories)
+        .where(eq(categories.userId, user.id));
+
+        throw error
+    }
   }
 
   return userCategories;

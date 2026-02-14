@@ -52,7 +52,7 @@ export default function BudgetCard({
         </FieldLabel>
         <Progress value={percentage} indicatorClassName={color} id="catagory" />
         <FieldLabel className="flex items-center justify-between">
-          <div>
+          <div className="flex gap-2">
             <span className="text-xs text-muted-foreground">
               ${spent.toFixed(2)} / ${limit.toFixed(2)}
             </span>

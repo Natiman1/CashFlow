@@ -1,4 +1,5 @@
-import { getBudgetsWithUsage, getUserCategories } from "@/actions/budgets";
+import { getBudgetsWithUsage } from "@/actions/budgets";
+import { getUserCategories } from "@/actions/categories";
 import BudgetsClient from "@/components/budgets/budgets-client";
 
 const BudgetsPage = async () => {
