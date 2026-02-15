@@ -13,11 +13,49 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { signOut, useSession } from "@/lib/auth-client";
 import { Bell, PanelLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  getNotifications,
+  markNotificationAsRead,
+} from "@/actions/notifications";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
+
+interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  read: boolean | null;
+  createdAt: Date | null;
+}
 
 export default function Topbar() {
   const { toggle } = useSidebar();
 
   const { data: session } = useSession();
+
+  const [notificationList, setNotificationList] = useState<Notification[]>([]);
+
+  const fetchNotifications = async () => {
+    const res = (await getNotifications()) as Notification[];
+    setNotificationList(res);
+  };
+
+  useEffect(() => {
+    async function init() {
+      const res = (await getNotifications()) as Notification[];
+      setNotificationList(res);
+    }
+    init();
+  }, []);
+
+  const unreadCount = notificationList.filter((n) => !n.read).length;
+
+  const handleMarkAsRead = async (id: string) => {
+    await markNotificationAsRead(id);
+    await fetchNotifications();
+  };
 
   const router = useRouter();
   return (
@@ -29,20 +67,79 @@ export default function Topbar() {
         <h1 className="text-lg font-semibold ">Dashboard</h1>
       </div>
 
+      {/* notifications */}
       <div className="flex items-center gap-4">
-        <button className="relative  hover:text-gray-600">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-emerald-500" />
-        </button>
-
+        <DropdownMenu>
+          <DropdownMenuTrigger className="relative outline-none">
+            <Bell className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white">
+                {unreadCount}
+              </span>
+            )}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-80" align="end">
+            <DropdownMenuLabel className="flex items-center justify-between">
+              <span>Notifications</span>
+              {unreadCount > 0 && (
+                <span className="text-xs font-normal text-muted-foreground">
+                  {unreadCount} unread
+                </span>
+              )}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <div className="max-h-100 overflow-y-auto">
+              {notificationList.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  No notifications
+                </div>
+              ) : (
+                notificationList.map((n) => (
+                  <DropdownMenuItem
+                    key={n.id}
+                    className={cn(
+                      "flex flex-col items-start gap-1 p-4 cursor-default focus:bg-accent",
+                      !n.read && "bg-emerald-50/50 dark:bg-emerald-950/20",
+                    )}
+                    onClick={() => !n.read && handleMarkAsRead(n.id)}
+                  >
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <span
+                        className={cn(
+                          "font-medium",
+                          !n.read && "text-emerald-600 dark:text-emerald-400",
+                        )}
+                      >
+                        {n.title}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                        {n.createdAt
+                          ? formatDistanceToNow(new Date(n.createdAt), {
+                              addSuffix: true,
+                            })
+                          : ""}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground line-clamp-2">
+                      {n.message}
+                    </p>
+                    {!n.read && (
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    )}
+                  </DropdownMenuItem>
+                ))
+              )}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* user menu */}
         <DropdownMenu>
           <DropdownMenuTrigger>
-           
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-white">
-                  {session?.user?.name[0].toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-primary text-white">
+                {session?.user?.name[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel className="font-normal">

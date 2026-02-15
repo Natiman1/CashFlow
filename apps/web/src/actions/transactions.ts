@@ -9,6 +9,7 @@ import { eq, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { checkBudgetAlerts } from "@/lib/notifications/budget-alert";
 
 function normalizeAmount(amount: number, type: "income" | "expense") {
   return type === "expense" ? -Math.abs(amount) : Math.abs(amount);
@@ -45,6 +46,13 @@ export async function addTransaction(data: z.infer<typeof transactionSchema>) {
     amount: normalizedAmount.toString(),
     date: new Date(parsed.data.date),
   });
+  const transactionDate = new Date(parsed.data.date);
+  await checkBudgetAlerts(
+    user.id,
+    parsed.data.categoryId,
+    transactionDate.getMonth() + 1,
+    transactionDate.getFullYear(),
+  );
   revalidatePath("/dashboard/transactions");
 }
 
