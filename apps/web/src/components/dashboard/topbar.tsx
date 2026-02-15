@@ -11,13 +11,14 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { signOut, useSession } from "@/lib/auth-client";
-import { Bell, PanelLeft } from "lucide-react";
+import { Bell, PanelLeft, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   getNotifications,
   markNotificationAsRead,
+  deleteNotification,
 } from "@/actions/notifications";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, startTransition } from "react";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 
@@ -37,23 +38,49 @@ export default function Topbar() {
 
   const [notificationList, setNotificationList] = useState<Notification[]>([]);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     const res = (await getNotifications()) as Notification[];
     setNotificationList(res);
-  };
+  }, []);
 
   useEffect(() => {
-    async function init() {
-      const res = (await getNotifications()) as Notification[];
-      setNotificationList(res);
+    let isMounted = true;
+
+    async function initialize() {
+      const res = await getNotifications();
+      if (isMounted) {
+        startTransition(() => {
+          setNotificationList(res as Notification[]);
+        });
+      }
     }
-    init();
-  }, []);
+
+    initialize();
+
+    // Listen for transaction added event
+    const handleTransactionAdded = () => {
+      setTimeout(() => {
+        if (isMounted) initialize();
+      }, 500);
+    };
+
+    window.addEventListener("transaction-added", handleTransactionAdded);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("transaction-added", handleTransactionAdded);
+    };
+  }, []); // Use getNotifications as stable dependency
 
   const unreadCount = notificationList.filter((n) => !n.read).length;
 
   const handleMarkAsRead = async (id: string) => {
     await markNotificationAsRead(id);
+    await fetchNotifications();
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteNotification(id);
     await fetchNotifications();
   };
 
@@ -70,7 +97,7 @@ export default function Topbar() {
       {/* notifications */}
       <div className="flex items-center gap-4">
         <DropdownMenu>
-          <DropdownMenuTrigger className="relative outline-none">
+          <DropdownMenuTrigger className="relative outline-none cursor-pointer">
             <Bell className="h-5 w-5" />
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white">
@@ -98,7 +125,7 @@ export default function Topbar() {
                   <DropdownMenuItem
                     key={n.id}
                     className={cn(
-                      "flex flex-col items-start gap-1 p-4 cursor-default focus:bg-accent",
+                      "flex flex-col items-start gap-1 p-4 cursor-default focus:bg-accent group relative",
                       !n.read && "bg-emerald-50/50 dark:bg-emerald-950/20",
                     )}
                     onClick={() => !n.read && handleMarkAsRead(n.id)}
@@ -120,12 +147,23 @@ export default function Topbar() {
                           : ""}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      {n.message}
-                    </p>
-                    {!n.read && (
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    )}
+                    <div className="flex items-start gap-2 w-full">
+                      <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
+                        {n.message}
+                      </p>
+                      {!n.read && (
+                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(n.id);
+                        }}
+                        className="text-red-500 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-50 dark:hover:bg-red-950/30 rounded"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </DropdownMenuItem>
                 ))
               )}
@@ -134,7 +172,7 @@ export default function Topbar() {
         </DropdownMenu>
         {/* user menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className="cursor-pointer outline-none">
             <Avatar className="h-8 w-8">
               <AvatarFallback className="bg-primary text-white">
                 {session?.user?.name[0].toUpperCase()}

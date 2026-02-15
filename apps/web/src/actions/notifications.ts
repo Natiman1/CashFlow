@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { notifications } from "@/db/schema/notifications"; 
 import { getUser } from "@/lib/auth-utils";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 export async function getNotifications() {
   const user = await getUser();
@@ -21,4 +21,21 @@ export async function markNotificationAsRead(id: string) {
     .update(notifications)
     .set({ read: true })
     .where(eq(notifications.id, id));
+}
+
+export async function markAllNotificationsAsRead() {
+  const user = await getUser();
+
+  await db
+    .update(notifications)
+    .set({ read: true })
+    .where(eq(notifications.userId, user.id));
+}
+
+export async function deleteNotification(id: string) {
+  const user = await getUser();
+
+  await db
+    .delete(notifications)
+    .where(and(eq(notifications.id, id), eq(notifications.userId, user.id)));
 }

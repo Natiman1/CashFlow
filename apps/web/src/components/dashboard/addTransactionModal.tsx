@@ -63,6 +63,8 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
       date: (date ?? new Date()).toISOString().split("T")[0],
     });
 
+    window.dispatchEvent(new Event("transaction-added"));
+
     toast.success("Transaction added", {
       description: "Transaction added successfully",
     });
