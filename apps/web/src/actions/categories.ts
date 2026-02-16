@@ -41,6 +41,7 @@ export async function getUserCategories() {
       userId: user.id,
       name: c.name,
       type: c.type,
+      color: c.color,
       isDefault: true,
     }));
 
@@ -54,7 +55,7 @@ export async function getUserCategories() {
         .from(categories)
         .where(eq(categories.userId, user.id));
 
-        throw error
+      throw error;
     }
   }
 

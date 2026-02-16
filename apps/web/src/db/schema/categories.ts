@@ -11,13 +11,14 @@ import { user } from "./auth";
 export const categoryTypeEnum = pgEnum("category_type", ["income", "expense"]);
 
 export const defaultCategories = [
-  { name: "Salary", type: "income" },
-  { name: "Rent", type: "expense" },
-  { name: "Food", type: "expense" },
-  { name: "Transport", type: "expense" },
-  { name: "Utilities", type: "expense" },
-  { name: "Entertainment", type: "expense" },
-  { name: "Shopping", type: "expense" },
+  { name: "Salary", type: "income", color: "#4CAF50" },
+  { name: "Rent", type: "expense", color: "#F44336" },
+  { name: "Food", type: "expense", color: "#2196F3" },
+  { name: "Transport", type: "expense", color: "#9C27B0" },
+  { name: "Utilities", type: "expense", color: "#FFC107" },
+  { name: "Entertainment", type: "expense", color: "#FF5722" },
+  { name: "Shopping", type: "expense", color: "#FFC107" },
+
 ] as const;
 
 export const categories = pgTable(
@@ -33,6 +34,8 @@ export const categories = pgTable(
 
     type: categoryTypeEnum("type").notNull(),
 
+    color: text("color").notNull(),
+
     isDefault: boolean("is_default").default(false),
 
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -43,6 +46,7 @@ export const categories = pgTable(
         table.userId,
         table.name,
         table.type,
+        table.color,
       ),
     };
   },
