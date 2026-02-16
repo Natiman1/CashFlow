@@ -9,11 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { TransactionUI } from "@/lib/types/transactions-type";
+import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 const page = async () => {
   await authIsRequired();
+
+  const session = await getSession();
+
   const [data, transactions] = await Promise.all([
     getDashboardData(),
     getUserTransactions(),
@@ -60,7 +64,10 @@ const page = async () => {
   }));
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8 lg:p-6">
+      <h1 className="text-3xl font-bold tracking-tight">
+        Welcome back, {session?.user?.name}
+      </h1>
       <div className="grid gap-4 md:grid-cols-3">
         <SummaryCard
           label="Monthly Income"
@@ -77,70 +84,69 @@ const page = async () => {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <div className="rounded-lg border bg-card p-6 shadow-sm lg:col-span-2">
+        <div className="rounded-lg border bg-card p-6 shadow-sm lg:col-span-2 min-w-0">
           <BarGraph data={data.monthlyTrend} />
         </div>
         <ExpensesChart data={data.expenseByCategory} />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4 min-w-0">
           <h2 className="text-lg font-semibold">Recent Transactions</h2>
-          <div className="border border-gray-400 rounded-lg">
-            <table className="w-full text-sm ">
-            <thead>
-              <tr className="border-b bg-muted/50 transition-colors">
-                <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Description
-                </th>
-                <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Category
-                </th>
-                <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
-                  Date
-                </th>
-                <th className="h-10 px-4 text-right align-middle font-medium text-muted-foreground">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody className="[&_tr:last-child]:border-0">
-              {formattedTransactions.slice(0, 6).map((tx) => (
-                <tr
-                  key={tx.id}
-                  className="border-b transition-colors hover:bg-muted/50"
-                >
-                  <td className="p-4 align-middle font-medium">
-                    {tx.description}
-                  </td>
-                  <td className="p-4 align-middle">
-                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                      {tx.category}
-                    </span>
-                  </td>
-                  <td className="p-4 align-middle text-muted-foreground">
-                    {new Date(tx.date).toLocaleDateString()}
-                  </td>
-                  <td
-                    className={`p-4 align-middle text-right font-semibold ${
-                      Number(tx.amount) < 0
-                        ? "text-destructive"
-                        : "text-emerald-600"
-                    }`}
-                  >
-                    {Number(tx.amount) < 0 ? "-" : "+"}$
-                    {Math.abs(Number(tx.amount)).toLocaleString()}
-                  </td>
+          <div className="border border-gray-400 rounded-lg overflow-x-auto">
+            <table className="w-full text-sm min-w-150">
+              <thead>
+                <tr className="border-b bg-muted/50 transition-colors">
+                  <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Description
+                  </th>
+                  <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Category
+                  </th>
+                  <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Date
+                  </th>
+                  <th className="h-10 px-4 text-right align-middle font-medium text-muted-foreground">
+                    Amount
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="[&_tr:last-child]:border-0">
+                {formattedTransactions.slice(0, 6).map((tx) => (
+                  <tr
+                    key={tx.id}
+                    className="border-b transition-colors hover:bg-muted/50"
+                  >
+                    <td className="p-4 align-middle font-medium">
+                      {tx.description}
+                    </td>
+                    <td className="p-4 align-middle">
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                        {tx.category}
+                      </span>
+                    </td>
+                    <td className="p-4 align-middle text-muted-foreground">
+                      {new Date(tx.date).toLocaleDateString()}
+                    </td>
+                    <td
+                      className={`p-4 align-middle text-right font-semibold ${
+                        Number(tx.amount) < 0
+                          ? "text-destructive"
+                          : "text-emerald-600"
+                      }`}
+                    >
+                      {Number(tx.amount) < 0 ? "-" : "+"}$
+                      {Math.abs(Number(tx.amount)).toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          
         </div>
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0">
           <h2 className="text-lg font-semibold">Active Budgets</h2>
-          <div className="space-y-4 rounded-lg border bg-card p-6 shadow-sm">
+          <div className="space-y-4 rounded-lg border bg-card p-4 md:p-6 shadow-sm">
             {data.budgets.length > 0 ? (
               data.budgets.map((budget) => (
                 <BudgetProgress

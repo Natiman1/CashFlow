@@ -19,7 +19,7 @@ const StatisticsPage = async ({ searchParams }: StatisticsPageProps) => {
   const data = await getStatisticsData(range);
 
   return (
-    <div className="flex flex-col gap-8 p-6">
+    <div className="flex flex-col gap-8 lg:p-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Statistics</h1>
@@ -30,9 +30,9 @@ const StatisticsPage = async ({ searchParams }: StatisticsPageProps) => {
         <StatsPeriodSelector />
       </div>
 
-      <StatsSummaryCards data={data.totals} />
+      <StatsSummaryCards data={data} />
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-3">
         <TrendAnalysisChart data={data.monthlyTrend} />
         <CategoryBreakdown data={data.expenseByCategory} />
       </div>

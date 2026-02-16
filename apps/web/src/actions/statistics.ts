@@ -60,7 +60,7 @@ export async function getStatisticsData(range: StatsRange = "this_month") {
   const totalIncome = Number(totals[0]?.income ?? 0);
   const totalExpense = Math.abs(Number(totals[0]?.expense ?? 0));
   const savings = totalIncome - totalExpense;
-  const savingsRate = totalIncome > 0 ? (savings / totalIncome) * 100 : 0;
+  const savingsRate = totalIncome === 0 ? 0 : (savings / totalIncome) * 100;
 
   // 2. Expense by category
   const rawExpenseByCategory = await db.execute<{
@@ -156,15 +156,49 @@ export async function getStatisticsData(range: StatsRange = "this_month") {
     expense: Math.abs(Number(row.expense)),
   }));
 
+  const getPreviousPeriodDates = (startDate: Date, endDate: Date) => {
+    const diff = endDate.getTime() - startDate.getTime();
+    const prevStart = new Date(startDate.getTime() - diff);
+    const prevEnd = new Date(startDate.getTime() - 1);
+    return { prevStart, prevEnd };
+  };
+
+  const { prevStart, prevEnd } = getPreviousPeriodDates(startDate, endDate);
+
+  const prevTotals = await db.execute<{
+    income: string;
+    expense: string;
+  }>(sql`
+    SELECT
+      SUM(CASE WHEN c.type = 'income' THEN t.amount::numeric ELSE 0 END) AS income,
+      SUM(CASE WHEN c.type = 'expense' THEN t.amount::numeric ELSE 0 END) AS expense
+    FROM transactions t
+    JOIN categories c ON t.category_id = c.id
+    WHERE t.user_id = ${user.id}
+      AND t.date >= ${prevStart.toISOString()}
+      AND t.date <= ${prevEnd.toISOString()}
+  `);
+
+  const prevTotalIncome = Number(prevTotals[0]?.income ?? 0);
+  const prevTotalExpense = Math.abs(Number(prevTotals[0]?.expense ?? 0));
+  const prevSavings = prevTotalIncome - prevTotalExpense;
+  const prevSavingsRate = prevTotalIncome === 0 ? 0 : (prevSavings / prevTotalIncome) * 100;
+
   return {
     totals: {
       income: totalIncome,
       expense: totalExpense,
       balance: totalIncome - totalExpense,
-      savingsRate: Math.max(0, savingsRate),
+      savingsRate: savingsRate,
     },
     expenseByCategory,
     dailySpending,
     monthlyTrend,
+    prevTotals: {
+      income: prevTotalIncome,
+      expense: prevTotalExpense,
+      balance: prevTotalIncome - prevTotalExpense,
+      savingsRate: prevSavingsRate,
+    },
   };
 }

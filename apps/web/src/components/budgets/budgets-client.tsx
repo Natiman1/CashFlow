@@ -18,23 +18,20 @@ export default function BudgetsClient({ initialBudgets, categories }: Props) {
     null,
   );
 
-  const handleDelete =async () => {
+  const handleDelete = async () => {
     try {
-      const budgets = initialBudgets.map((budget) => (
-        budget.budgetId
-      ))
-      await deleteBudget(budgets[0])
-      toast.success("Budget deleted successfully")
-    
+      const budgets = initialBudgets.map((budget) => budget.budgetId);
+      await deleteBudget(budgets[0]);
+      toast.success("Budget deleted successfully");
     } catch (error) {
-       toast.error("Failed to delete budget");
+      toast.error("Failed to delete budget");
       console.error(error);
     }
-  }
+  };
 
   return (
     <section className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">Budgets</h1>
           <p className="text-sm text-muted-foreground">

@@ -30,7 +30,7 @@ const ExpensesChart = ({ data }: { data: ExpenseData[] }) => {
   }
 
   return (
-    <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1 border border-gray-400">
+    <div className="rounded-lg bg-card p-4 shadow-sm lg:col-span-1 border border-gray-400 min-w-0">
       <h2 className="mb-4 text-sm font-medium text-foreground">
         Expenses by category
       </h2>

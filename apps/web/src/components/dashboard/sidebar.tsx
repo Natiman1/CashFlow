@@ -24,7 +24,7 @@ const navItems = [
   {
     label: "Categories",
     href: "/dashboard/categories",
-    icon:  Folders,
+    icon: Folders,
   },
   {
     label: "Budgets",
@@ -79,6 +79,9 @@ export default function Sidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => {
+                      if (window.innerWidth < 768) close();
+                    }}
                     className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
                       isActive
                         ? "bg-emerald-50 text-emerald-600"

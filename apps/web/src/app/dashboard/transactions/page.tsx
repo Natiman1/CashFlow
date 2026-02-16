@@ -17,7 +17,7 @@ const TransactionsPage = async () => {
   }));
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <h1 className="text-lg font-semibold text-foreground">Transactions</h1>
 
         <AddTransactionModal text="Add Transaction" />

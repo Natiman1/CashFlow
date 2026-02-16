@@ -12,12 +12,12 @@ const BudgetProgress = ({
 }) => {
   const percentage =
     limit > 0 ? Math.floor(Math.min((spent / limit) * 100, 100)) : 0;
-      let color = "bg-emerald-500";
+  let color = "bg-emerald-500";
   if (percentage >= 80 && percentage < 100) color = "bg-amber-500";
   if (percentage >= 100) color = "bg-red-500";
   return (
-    <Field>
-      <FieldLabel htmlFor={name}>
+    <Field className="w-full">
+      <FieldLabel htmlFor={name} className="w-full">
         <span className="text-sm font-medium">{name}</span>
         <span className="ml-auto text-xs text-muted-foreground">
           {percentage}%
