@@ -10,6 +10,8 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { TransactionUI } from "@/lib/types/transactions-type";
 import { getSession } from "@/lib/auth";
+import { getSettings } from "@/actions/settings";
+import { formatCurrency } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -18,10 +20,13 @@ const page = async () => {
 
   const session = await getSession();
 
-  const [data, transactions] = await Promise.all([
+  const [data, transactions, { settings }] = await Promise.all([
     getDashboardData(),
     getUserTransactions(),
+    getSettings(),
   ]);
+
+  const currency = settings?.currency || "USD";
 
   // Check for empty state
   const hasNoData =
@@ -71,23 +76,23 @@ const page = async () => {
       <div className="grid gap-4 md:grid-cols-3">
         <SummaryCard
           label="Monthly Income"
-          value={`$${data.income.toLocaleString()}`}
+          value={formatCurrency(data.income, currency)}
         />
         <SummaryCard
           label="Monthly Expenses"
-          value={`$${data.expense.toLocaleString()}`}
+          value={formatCurrency(data.expense, currency)}
         />
         <SummaryCard
           label="Balance"
-          value={`$${data.balance.toLocaleString()}`}
+          value={formatCurrency(data.balance, currency)}
         />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="rounded-lg border bg-card p-6 shadow-sm lg:col-span-2 min-w-0">
-          <BarGraph data={data.monthlyTrend} />
+          <BarGraph data={data.monthlyTrend} currency={currency} />
         </div>
-        <ExpensesChart data={data.expenseByCategory} />
+        <ExpensesChart data={data.expenseByCategory} currency={currency} />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -135,8 +140,7 @@ const page = async () => {
                           : "text-emerald-600"
                       }`}
                     >
-                      {Number(tx.amount) < 0 ? "-" : "+"}$
-                      {Math.abs(Number(tx.amount)).toLocaleString()}
+                      {formatCurrency(Number(tx.amount), currency)}
                     </td>
                   </tr>
                 ))}

@@ -22,6 +22,13 @@
       "when": 1771231579223,
       "tag": "0002_nappy_ultron",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771324953355,
+      "tag": "0003_colorful_fenris",
+      "breakpoints": true
     }
   ]
 }

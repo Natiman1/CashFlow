@@ -9,12 +9,17 @@ import {
   Legend,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 
 interface CategoryBreakdownProps {
   data: { name: string; value: number; color: string }[];
+  currency?: string;
 }
 
-export function CategoryBreakdown({ data }: CategoryBreakdownProps) {
+export function CategoryBreakdown({
+  data,
+  currency = "USD",
+}: CategoryBreakdownProps) {
   return (
     <Card className="col-span-1">
       <CardHeader>
@@ -42,7 +47,7 @@ export function CategoryBreakdown({ data }: CategoryBreakdownProps) {
                 </Pie>
                 <Tooltip
                   formatter={(value: number | string | undefined) => [
-                    `$${value?.toLocaleString()}`,
+                    formatCurrency(Number(value) || 0, currency),
                     "Amount",
                   ]}
                   contentStyle={{

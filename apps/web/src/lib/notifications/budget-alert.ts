@@ -3,6 +3,14 @@ import { budgets } from "@/db/schema/budgets";
 import { categories } from "@/db/schema/categories";
 import { createNotificationOnce } from "./notifications";
 import { sql, eq, and } from "drizzle-orm";
+import { user } from "@/db/schema/auth";
+
+type UserSettings = {
+  notifications: {
+    budgetAlerts: boolean;
+    monthlyReports: boolean;
+  };
+};
 
 export async function checkBudgetAlerts(
   userId: string,
@@ -10,6 +18,18 @@ export async function checkBudgetAlerts(
   month: number,
   year: number,
 ) {
+  // 1️⃣ Check user settings
+  const userRecord = await db.query.user.findFirst({
+    where: eq(user.id, userId),
+    columns: { settings: true },
+  });
+
+  const settings = userRecord?.settings as UserSettings;
+  if (settings?.notifications?.budgetAlerts === false) {
+    console.log(`[BudgetAlert] Budget alerts disabled for user ${userId}`);
+    return;
+  }
+
   const [budget] = await db
     .select({
       limit: budgets.limit,

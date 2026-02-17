@@ -2,6 +2,7 @@ import { TransactionUI } from "@/lib/types/transactions-type";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import DeleteTransaction from "./deleteTransaction";
+import { formatCurrency } from "@/lib/utils";
 
 function filterByMonth(
   row: Row<TransactionUI>,
@@ -12,7 +13,9 @@ function filterByMonth(
   return String(row.getValue(columnId) ?? "").startsWith(value);
 }
 
-const columns: ColumnDef<TransactionUI>[] = [
+export const getColumns = (
+  currency: string = "USD",
+): ColumnDef<TransactionUI>[] => [
   {
     accessorKey: "description",
     header: "Description",
@@ -44,7 +47,7 @@ const columns: ColumnDef<TransactionUI>[] = [
             value < 0 ? "text-red-500" : "text-emerald-600"
           }`}
         >
-          {value < 0 ? "-" : "+"}${Math.abs(value)}
+          {formatCurrency(value, currency)}
         </span>
       );
     },
@@ -71,7 +74,7 @@ const columns: ColumnDef<TransactionUI>[] = [
       const transaction = row.original;
       return <DeleteTransaction id={transaction.id} />;
     },
-  }
+  },
 ];
 
-export default columns;
+export default getColumns;

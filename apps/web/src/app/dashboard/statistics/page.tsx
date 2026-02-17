@@ -1,10 +1,12 @@
 import { getStatisticsData, StatsRange } from "@/actions/statistics";
+import { getSettings } from "@/actions/settings";
 import { StatsPeriodSelector } from "@/components/statistics/StatsPeriodSelector";
 import { StatsSummaryCards } from "@/components/statistics/StatsSummaryCards";
 import { DailySpendingChart } from "@/components/statistics/DailySpendingChart";
 import { TrendAnalysisChart } from "@/components/statistics/TrendAnalysisChart";
 import { CategoryBreakdown } from "@/components/statistics/CategoryBreakdown";
 import { authIsRequired } from "@/lib/auth-utils";
+import { formatCurrency } from "@/lib/utils";
 
 interface StatisticsPageProps {
   searchParams: Promise<{ range?: string }>;
@@ -17,6 +19,8 @@ const StatisticsPage = async ({ searchParams }: StatisticsPageProps) => {
   const resolvedParams = await searchParams;
   const range = (resolvedParams.range as StatsRange) || "this_month";
   const data = await getStatisticsData(range);
+  const { settings } = await getSettings();
+  const currency = settings?.currency || "USD";
 
   return (
     <div className="flex flex-col gap-8 lg:p-6">
@@ -30,16 +34,16 @@ const StatisticsPage = async ({ searchParams }: StatisticsPageProps) => {
         <StatsPeriodSelector />
       </div>
 
-      <StatsSummaryCards data={data} />
+      <StatsSummaryCards data={data} currency={currency} />
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <TrendAnalysisChart data={data.monthlyTrend} />
-        <CategoryBreakdown data={data.expenseByCategory} />
+        <TrendAnalysisChart data={data.monthlyTrend} currency={currency} />
+        <CategoryBreakdown data={data.expenseByCategory} currency={currency} />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <DailySpendingChart data={data.dailySpending} />
+          <DailySpendingChart data={data.dailySpending} currency={currency} />
         </div>
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <h3 className="mb-4 text-lg font-semibold">Top Categories</h3>
@@ -58,7 +62,7 @@ const StatisticsPage = async ({ searchParams }: StatisticsPageProps) => {
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-bold">
-                    ${category.value.toLocaleString()}
+                    {formatCurrency(category.value, currency)}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {data.totals.expense > 0

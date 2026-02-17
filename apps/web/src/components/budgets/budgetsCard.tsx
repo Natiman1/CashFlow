@@ -9,10 +9,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { EditIcon, MoreVertical, TrashIcon } from "lucide-react";
 
+import { formatCurrency } from "@/lib/utils";
+
 type BudgetCardProps = {
   category: string;
   limit: number;
   spent: number;
+  currency?: string;
   onEdit: () => void;
   onDelete: () => void;
 };
@@ -21,6 +24,7 @@ export default function BudgetCard({
   category,
   limit,
   spent,
+  currency = "USD",
   onEdit,
   onDelete,
 }: BudgetCardProps) {
@@ -35,7 +39,7 @@ export default function BudgetCard({
     const overBudgetAmount =
       Number(spent.toFixed(2)) - Number(limit.toFixed(2));
     if (overBudgetAmount > 0) {
-      return `Over budget by ${overBudgetAmount.toFixed(2)}`;
+      return `Over budget by ${formatCurrency(overBudgetAmount, currency)}`;
     } else if (overBudgetAmount === 0 && spent > 0 && spent >= limit) {
       return "Reached budget limit";
     } else {
@@ -54,7 +58,8 @@ export default function BudgetCard({
         <FieldLabel className="flex items-center justify-between">
           <div className="flex gap-2">
             <span className="text-xs text-muted-foreground">
-              ${spent.toFixed(2)} / ${limit.toFixed(2)}
+              {formatCurrency(spent, currency)} /{" "}
+              {formatCurrency(limit, currency)}
             </span>
             <span className="text-xs text-red-500">{overBudget()}</span>
           </div>
@@ -67,8 +72,14 @@ export default function BudgetCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onEdit}><EditIcon className="h-4 w-4" />Edit</DropdownMenuItem>
-              <DropdownMenuItem onClick={onDelete}><TrashIcon className="h-4 w-4 text-red-500" />Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={onEdit}>
+                <EditIcon className="h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDelete}>
+                <TrashIcon className="h-4 w-4 text-red-500" />
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </FieldLabel>

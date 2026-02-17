@@ -11,12 +11,17 @@ import {
   Legend,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 
 interface TrendAnalysisProps {
   data: { name: string; income: number; expense: number }[];
+  currency?: string;
 }
 
-export function TrendAnalysisChart({ data }: TrendAnalysisProps) {
+export function TrendAnalysisChart({
+  data,
+  currency = "USD",
+}: TrendAnalysisProps) {
   return (
     <Card className="lg:col-span-2">
       <CardHeader>
@@ -52,11 +57,13 @@ export function TrendAnalysisChart({ data }: TrendAnalysisProps) {
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) =>
+                    formatCurrency(value, currency).split(".")[0]
+                  }
                 />
                 <Tooltip
                   formatter={(value: number | string | undefined) => [
-                    `$${(Number(value) || 0).toLocaleString()}`,
+                    formatCurrency(Number(value) || 0, currency),
                     "",
                   ]}
                   contentStyle={{

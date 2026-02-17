@@ -10,10 +10,10 @@ import {
   getFilteredRowModel,
   ColumnFiltersState,
 } from "@tanstack/react-table";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { TransactionUI } from "@/lib/types/transactions-type";
 
-import columns from "./columns";
+import getColumns from "./columns";
 import Pagination from "./pagination";
 import TableFilters from "./tableFilters";
 import ExportToCsv from "./exportToCvs";
@@ -22,9 +22,14 @@ import { Category } from "@/lib/types/category-type";
 type Props = {
   data: TransactionUI[];
   categories: Category[];
+  currency?: string;
 };
 
-export default function TransactionsTable({ data, categories }: Props) {
+export default function TransactionsTable({
+  data,
+  categories,
+  currency = "USD",
+}: Props) {
   "use no memo";
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -36,6 +41,8 @@ export default function TransactionsTable({ data, categories }: Props) {
   useEffect(() => {
     setTransactions(data);
   }, [data]);
+
+  const columns = useMemo(() => getColumns(currency), [currency]);
 
   const table = useReactTable({
     data: transactions,

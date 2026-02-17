@@ -3,10 +3,16 @@ import AddTransactionModal from "@/components/dashboard/addTransactionModal";
 import { getUserTransactions } from "@/actions/transactions";
 import { TransactionUI } from "@/lib/types/transactions-type";
 import { getUserCategories } from "@/actions/categories";
+import { getSettings } from "@/actions/settings";
 
 const TransactionsPage = async () => {
-  const dbTransactions = await getUserTransactions();
-  const categories = await getUserCategories();
+  const [dbTransactions, categories, { settings }] = await Promise.all([
+    getUserTransactions(),
+    getUserCategories(),
+    getSettings(),
+  ]);
+
+  const currency = settings?.currency || "USD";
 
   const transactions: TransactionUI[] = dbTransactions.map((t) => ({
     id: t.id,
@@ -23,7 +29,11 @@ const TransactionsPage = async () => {
         <AddTransactionModal text="Add Transaction" />
       </div>
 
-      <TransactionsTable data={transactions} categories={categories} />
+      <TransactionsTable
+        data={transactions}
+        categories={categories}
+        currency={currency}
+      />
     </div>
   );
 };

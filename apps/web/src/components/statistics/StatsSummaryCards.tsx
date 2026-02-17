@@ -1,5 +1,12 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowDownRight, ArrowUpRight, Wallet, Percent } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
 interface StatsSummaryProps {
   data: {
@@ -16,9 +23,13 @@ interface StatsSummaryProps {
       savingsRate: number;
     };
   };
+  currency?: string;
 }
 
-export function StatsSummaryCards({ data }: StatsSummaryProps) {
+export function StatsSummaryCards({
+  data,
+  currency = "USD",
+}: StatsSummaryProps) {
   const calculateTrend = (current: number, previous: number) => {
     if (previous === 0) return current === 0 ? 0 : 100;
     return ((current - previous) / Math.abs(previous)) * 100;
@@ -27,7 +38,7 @@ export function StatsSummaryCards({ data }: StatsSummaryProps) {
   const cards = [
     {
       title: "Total Income",
-      value: `$${data.totals.income.toLocaleString()}`,
+      value: formatCurrency(data.totals.income, currency),
       trend: calculateTrend(data.totals.income, data.prevTotals.income),
       icon: ArrowUpRight,
       color: "text-emerald-600",
@@ -35,7 +46,7 @@ export function StatsSummaryCards({ data }: StatsSummaryProps) {
     },
     {
       title: "Total Expenses",
-      value: `$${data.totals.expense.toLocaleString()}`,
+      value: formatCurrency(data.totals.expense, currency),
       trend: calculateTrend(data.totals.expense, data.prevTotals.expense),
       icon: ArrowDownRight,
       color: "text-rose-600",
@@ -44,7 +55,7 @@ export function StatsSummaryCards({ data }: StatsSummaryProps) {
     },
     {
       title: "Savings Balance",
-      value: `$${data.totals.balance.toLocaleString()}`,
+      value: formatCurrency(data.totals.balance, currency),
       trend: calculateTrend(data.totals.balance, data.prevTotals.balance),
       icon: Wallet,
       color: "text-blue-600",
@@ -90,7 +101,6 @@ export function StatsSummaryCards({ data }: StatsSummaryProps) {
               <div className={`${card.className} text-2xl font-bold`}>
                 {card.value}
               </div>
-              
             </CardContent>
             <CardFooter>
               <div className={`flex items-center text-xs ${trendColor}`}>

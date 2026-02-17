@@ -11,9 +11,14 @@ import { toast } from "sonner";
 type Props = {
   initialBudgets: BudgetWithUsage[];
   categories: { id: string; name: string; type: string }[];
+  currency?: string;
 };
 
-export default function BudgetsClient({ initialBudgets, categories }: Props) {
+export default function BudgetsClient({
+  initialBudgets,
+  categories,
+  currency = "USD",
+}: Props) {
   const [selectedBudget, setSelectedBudget] = useState<BudgetWithUsage | null>(
     null,
   );
@@ -49,6 +54,7 @@ export default function BudgetsClient({ initialBudgets, categories }: Props) {
             category={budget.category}
             limit={budget.limit}
             spent={budget.spent}
+            currency={currency}
             onEdit={() => setSelectedBudget(budget)}
             onDelete={handleDelete}
           />

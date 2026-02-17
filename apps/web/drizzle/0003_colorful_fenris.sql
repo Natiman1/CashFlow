@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "settings" jsonb DEFAULT '{"currency":"USD","language":"en","notifications":{"budgetAlerts":true,"monthlyReports":false}}'::jsonb;

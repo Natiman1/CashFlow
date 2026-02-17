@@ -10,12 +10,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 
 interface DailySpendingProps {
   data: { date: string; amount: number }[];
+  currency?: string;
 }
 
-export function DailySpendingChart({ data }: DailySpendingProps) {
+export function DailySpendingChart({
+  data,
+  currency = "USD",
+}: DailySpendingProps) {
   return (
     <Card className="col-span-1">
       <CardHeader>
@@ -39,11 +44,13 @@ export function DailySpendingChart({ data }: DailySpendingProps) {
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) =>
+                    formatCurrency(value, currency).split(".")[0]
+                  }
                 />
                 <Tooltip
                   formatter={(value: number | string | undefined) => [
-                    `$${value?.toLocaleString()}`,
+                    formatCurrency(Number(value) || 0, currency),
                     "Amount",
                   ]}
                   contentStyle={{

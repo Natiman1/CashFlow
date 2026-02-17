@@ -1,6 +1,8 @@
 "use client";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import PieLegend from "./pieLagend";
+import { formatCurrency } from "@/lib/utils";
+
 
 const COLORS = ["#10b981", "#60a5fa", "#f59e0b", "#ef4444"];
 
@@ -9,10 +11,10 @@ interface ExpenseData {
   value: number;
 }
 
-const ExpensesChart = ({ data }: { data: ExpenseData[] }) => {
+const ExpensesChart = ({ data, currency = "USD", }: { data: ExpenseData[], currency: string }) => {
   const legendData = data.map((item, index) => ({
     name: item.name,
-    value: Number(item.value),
+    value: formatCurrency(Number(item.value), currency),
     color: COLORS[index % COLORS.length],
   }));
 

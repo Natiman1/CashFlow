@@ -2,13 +2,21 @@
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 
+import { formatCurrency } from "@/lib/utils";
+
 interface BarChartData {
   name: string;
   income: number;
   expense: number;
 }
 
-const BarGraph = ({ data }: { data: BarChartData[] }) => {
+const BarGraph = ({
+  data,
+  currency = "USD",
+}: {
+  data: BarChartData[];
+  currency?: string;
+}) => {
   return (
     <div className="w-full h-75 sm:h-100">
       <div className="flex items-center justify-between mb-4">
@@ -52,6 +60,9 @@ const BarGraph = ({ data }: { data: BarChartData[] }) => {
           axisLine={false}
           tickLine={false}
           tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+          tickFormatter={(value) =>
+            formatCurrency(value, currency).split(".")[0]
+          }
         />
         <Tooltip
           cursor={{ fill: "hsl(var(--muted))", opacity: 0.2 }}
@@ -60,6 +71,10 @@ const BarGraph = ({ data }: { data: BarChartData[] }) => {
             borderRadius: "8px",
             fontSize: "12px",
           }}
+          formatter={(value: number | undefined) => [
+            formatCurrency(value ?? 0, currency),
+            "",
+          ]}
         />
         <Bar
           dataKey="income"
