@@ -1,7 +1,0 @@
-auth.ts
-budgets.ts
-categories.ts
-index.ts
-notifications.ts
-relations.ts
-transactions.ts
