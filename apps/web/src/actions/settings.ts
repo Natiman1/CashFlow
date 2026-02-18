@@ -2,7 +2,7 @@
 
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { user } from "@/db/schema/auth";
+import { user } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 

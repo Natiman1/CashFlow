@@ -8,7 +8,7 @@ import BudgetProgress from "@/components/dashboard/budgetProgress";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { TransactionUI } from "@/lib/types/transactions-type";
+import { type TransactionUI } from "@repo/types";
 import { getSession } from "@/lib/auth";
 import { getSettings } from "@/actions/settings";
 import { formatCurrency } from "@/lib/utils";
@@ -69,7 +69,7 @@ const page = async () => {
   }));
 
   return (
-    <div className="space-y-8 lg:p-6">
+    <div className="space-y-8 lg:p-6 ">
       <h1 className="text-3xl font-bold tracking-tight">
         Welcome back, {session?.user?.name}
       </h1>

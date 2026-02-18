@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { BudgetWithUsage } from "@/lib/types/budgets-type";
+import { type BudgetWithUsage } from "@repo/types";
 import { upsertBudget } from "@/actions/budgets";
 import { toast } from "sonner";
 

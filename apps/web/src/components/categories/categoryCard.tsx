@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/lib/types/category-type";
+import { type Category } from "@repo/types";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import DeleteCategory from "./deleteCategoy";
 

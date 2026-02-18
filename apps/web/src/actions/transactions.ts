@@ -1,10 +1,8 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { transactions } from "@/db/schema/transactions";
-import { categories } from "@/db/schema/categories";
+import { db, transactions, categories } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
-import { transactionSchema } from "@/lib/types/transactions-type";
+import { transactionSchema } from "@repo/types";
 import { eq, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { z } from "zod";

@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { notifications } from "@/db/schema/notifications"; 
+import { notifications } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
 import { eq, desc, and } from "drizzle-orm";
 
@@ -16,7 +16,6 @@ export async function getNotifications() {
 }
 
 export async function markNotificationAsRead(id: string) {
-
   await db
     .update(notifications)
     .set({ read: true })

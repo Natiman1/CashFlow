@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Category } from "@/lib/types/category-type";
+import { type Category } from "@repo/types";
 import CategoryCard from "./categoryCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";

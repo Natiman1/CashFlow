@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { notifications } from "@/db/schema/notifications";
+import { notifications } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 import crypto from "crypto";
 

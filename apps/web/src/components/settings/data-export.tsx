@@ -48,7 +48,7 @@ export function DataExport() {
       </CardHeader>
       <CardContent>
         <Button onClick={handleExport} disabled={loading} variant="outline">
-          <DownloadIcon className="mr-2 h-4 w-4" />
+          <DownloadIcon className="mr-0.5 h-4 w-4" />
           {loading ? "Exporting..." : "Export Transactions to CSV"}
         </Button>
       </CardContent>

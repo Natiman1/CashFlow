@@ -1,11 +1,8 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { budgets } from "@/db/schema/budgets";
-import { categories } from "@/db/schema/categories";
-import { transactions } from "@/db/schema/transactions";
+import { db, budgets, categories, transactions } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
-import { budgetSchema, BudgetWithUsage } from "@/lib/types/budgets-type";
+import { budgetSchema, type BudgetWithUsage } from "@repo/types";
 import { randomUUID } from "crypto";
 import { eq, and, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

@@ -36,11 +36,6 @@ const navItems = [
     href: "/dashboard/statistics",
     icon: BarChart3,
   },
-  {
-    label: "Settings",
-    href: "/dashboard/settings",
-    icon: Settings,
-  },
 ];
 
 export default function Sidebar() {
@@ -64,35 +59,52 @@ export default function Sidebar() {
         `}
       >
         {isOpen && (
-          <div className="">
+          <div className="flex flex-col h-[calc(100vh-0.2rem)]">
             <Link href="/">
               <div className="flex h-16 items-center px-6 text-lg font-semibold cursor-pointer">
                 CashFlow
               </div>
             </Link>
 
-            <nav className="px-4 py-4 space-y-1 h-full overflow-y-auto">
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
+            <nav className="px-4 py-4 space-y-1 flex-1 overflow-y-auto flex flex-col justify-between">
+              <div>
+                {" "}
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href;
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => {
-                      if (window.innerWidth < 768) close();
-                    }}
-                    className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
-                      isActive
-                        ? "bg-emerald-50 text-emerald-600"
-                        : " hover:bg-muted hover:text-foreground"
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
-                  </Link>
-                );
-              })}
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => {
+                        if (window.innerWidth < 768) close();
+                      }}
+                      className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
+                        isActive
+                          ? "bg-emerald-50 text-emerald-600"
+                          : " hover:bg-muted hover:text-foreground"
+                      }`}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div className="">
+                <Link
+                  href="/dashboard/settings"
+                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
+                    pathname === "/dashboard/settings"
+                      ? "bg-emerald-50 text-emerald-600"
+                      : " hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <Settings className="h-4 w-4" />
+                  Settings
+                </Link>
+              </div>
             </nav>
           </div>
         )}

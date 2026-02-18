@@ -36,7 +36,11 @@
     "resend": "^6.9.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@repo/utils": "workspace:*",
+    "@repo/types": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/auth": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

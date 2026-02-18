@@ -2,7 +2,7 @@
 
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { transactions } from "@/db/schema/transactions";
+import { transactions } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import Papa from "papaparse";
 

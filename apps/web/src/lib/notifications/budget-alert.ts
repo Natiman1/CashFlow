@@ -1,9 +1,7 @@
 import { db } from "@/lib/db";
-import { budgets } from "@/db/schema/budgets";
-import { categories } from "@/db/schema/categories";
+import { budgets, categories, user } from "@/lib/db";
 import { createNotificationOnce } from "./notifications";
 import { sql, eq, and } from "drizzle-orm";
-import { user } from "@/db/schema/auth";
 
 type UserSettings = {
   notifications: {

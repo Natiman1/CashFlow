@@ -2,11 +2,9 @@
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/lib/db";
-import { categories } from "@/db/schema/categories";
+import { db, categories, defaultCategories } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
-import { categorySchema } from "@/lib/types/category-type";
-import { defaultCategories } from "@/db/schema/categories";
+import { categorySchema } from "@repo/types";
 import { randomUUID } from "crypto";
 
 export async function createCategory(data: unknown) {

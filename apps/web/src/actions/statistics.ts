@@ -3,14 +3,7 @@
 import { db } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
 import { sql } from "drizzle-orm";
-
-export type StatsRange =
-  | "this_month"
-  | "last_month"
-  | "last_3_months"
-  | "last_6_months"
-  | "this_year"
-  | "all";
+import { type StatsRange } from "@repo/types";
 
 export async function getStatisticsData(range: StatsRange = "this_month") {
   const user = await getUser();
@@ -182,7 +175,8 @@ export async function getStatisticsData(range: StatsRange = "this_month") {
   const prevTotalIncome = Number(prevTotals[0]?.income ?? 0);
   const prevTotalExpense = Math.abs(Number(prevTotals[0]?.expense ?? 0));
   const prevSavings = prevTotalIncome - prevTotalExpense;
-  const prevSavingsRate = prevTotalIncome === 0 ? 0 : (prevSavings / prevTotalIncome) * 100;
+  const prevSavingsRate =
+    prevTotalIncome === 0 ? 0 : (prevSavings / prevTotalIncome) * 100;
 
   return {
     totals: {

@@ -1,7 +1,7 @@
-import TransactionsTable from "@/components/dashboard/transactionsTable";
-import AddTransactionModal from "@/components/dashboard/addTransactionModal";
+import TransactionsTable from "@/components/transactions/transactionsTable";
+import AddTransactionModal from "@/components/transactions/addTransactionModal";
 import { getUserTransactions } from "@/actions/transactions";
-import { TransactionUI } from "@/lib/types/transactions-type";
+import { type TransactionUI } from "@repo/types";
 import { getUserCategories } from "@/actions/categories";
 import { getSettings } from "@/actions/settings";
 
@@ -23,7 +23,7 @@ const TransactionsPage = async () => {
   }));
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4">
         <h1 className="text-lg font-semibold text-foreground">Transactions</h1>
 
         <AddTransactionModal text="Add Transaction" />

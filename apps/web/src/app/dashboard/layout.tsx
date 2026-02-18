@@ -8,7 +8,7 @@ import { SidebarProvider } from "@/hooks/SidebarContext";
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-background ">
+      <div className="flex h-screen bg-background  ">
         {/* Sidebar */}
         <Sidebar />
 
@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="flex-1 transition-all duration-300 flex flex-col min-h-0 min-w-0 overflow-x-hidden">
           <Topbar />
 
-          <main className="flex-1 p-6 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden bg-background">
+          <main className="flex-1 p-6 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden bg-background  2xl:max-w-5xl 2xl:mx-auto">
             {children}
           </main>
         </div>

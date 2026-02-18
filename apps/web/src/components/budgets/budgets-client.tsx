@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import BudgetCard from "@/components/budgets/budgetsCard";
-import type { BudgetWithUsage } from "@/lib/types/budgets-type";
+import type { BudgetWithUsage } from "@repo/types";
 import EditBudgetModal from "@/components/budgets/editBudgetModal";
 import AddBudgetLimit from "@/components/budgets/addBudgetLimit";
 import { deleteBudget } from "@/actions/budgets";
