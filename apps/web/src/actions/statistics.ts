@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { getUser } from "@/lib/auth-utils";
 import { sql } from "drizzle-orm";
-import { type StatsRange } from "@repo/types";
+import type { StatsRange } from "@repo/types";
 
 export async function getStatisticsData(range: StatsRange = "this_month") {
   const user = await getUser();

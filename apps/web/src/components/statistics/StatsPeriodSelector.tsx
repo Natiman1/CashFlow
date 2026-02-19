@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
-import { StatsRange } from "@/actions/statistics";
+import type { StatsRange } from "@repo/types";
 
 export function StatsPeriodSelector() {
   const router = useRouter();

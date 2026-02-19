@@ -1,4 +1,5 @@
-import { getStatisticsData, StatsRange } from "@/actions/statistics";
+import { getStatisticsData } from "@/actions/statistics";
+import type { StatsRange } from "@repo/types";
 import { getSettings } from "@/actions/settings";
 import { StatsPeriodSelector } from "@/components/statistics/StatsPeriodSelector";
 import { StatsSummaryCards } from "@/components/statistics/StatsSummaryCards";
