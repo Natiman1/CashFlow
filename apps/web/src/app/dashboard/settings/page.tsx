@@ -29,7 +29,7 @@ export default async function SettingsPage() {
       </div>
       <Separator />
 
-      <div className="max-w-2xl space-y-10">
+      <div className="max-w-2xl space-y-10 mx-auto">
         {/* Profile */}
         <section className="space-y-4">
           <div>
