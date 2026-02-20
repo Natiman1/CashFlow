@@ -5,18 +5,17 @@ import { useSession } from "@/lib/auth-client";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-const DeleteTransaction = ({id}: {id: string}) => {
-    
+const DeleteTransaction = ({ id }: { id: string }) => {
   const { data: session } = useSession();
-    const handleDelete = async () => {
-        if (session?.user.email === "demo@cashflow.app") {
+  const handleDelete = async () => {
+    if (session?.user.email === "demo@cashflow.app") {
       toast.error("Demo account is read-only");
       return;
     }
-        await deleteTransaction(id);
-        toast.success("Transaction deleted successfully");
-    }
-  
+    await deleteTransaction(id);
+    toast.success("Transaction deleted successfully");
+  };
+
   return (
     <Trash2
       onClick={handleDelete}

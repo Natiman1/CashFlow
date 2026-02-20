@@ -39,7 +39,6 @@ const OverviewSection = () => {
             </LinkBtn>
           </div>
         </div>
-       
 
         <Image
           src="/Desktop-2.png"

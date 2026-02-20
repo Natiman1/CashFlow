@@ -32,10 +32,10 @@ const AddBudgetLimit = ({ categories, onSuccess }: Props) => {
   const { data: session } = useSession();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-      if (session?.user.email === "demo@cashflow.app") {
-          toast.error("Demo account is read-only");
-          return;
-        }
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
     if (!categoryId || limit <= 0) return;
 
     setIsSubmitting(true);

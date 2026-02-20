@@ -9,8 +9,8 @@ import { revalidatePath } from "next/cache";
 
 export async function upsertBudget(input: unknown) {
   const user = await getUser();
-   if (isDemoUser(user)) {
-    throw new Error("Demo account is read-only")
+  if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only");
   }
   const parsed = budgetSchema.safeParse(input);
   if (!parsed.success) throw new Error("Invalid budget data");
@@ -135,8 +135,8 @@ export async function getBudgetById(id: string) {
 
 export async function deleteBudget(id: string) {
   const user = await getUser();
-   if (isDemoUser(user)) {
-    throw new Error("Demo account is read-only")
+  if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only");
   }
   await db
     .delete(budgets)

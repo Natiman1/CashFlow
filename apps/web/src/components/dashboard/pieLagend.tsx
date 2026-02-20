@@ -23,9 +23,7 @@ export default function PieLegend({ items }: PieLegendProps) {
             />
             <span className="text-muted-foreground">{item.name}</span>
           </div>
-          <span className="font-medium text-foreground">
-            {item.value}
-          </span>
+          <span className="font-medium text-foreground">{item.value}</span>
         </li>
       ))}
     </ul>

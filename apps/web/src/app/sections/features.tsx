@@ -8,10 +8,16 @@ import {
 } from "@/components/layout/card";
 import LinkBtn from "@/components/ui/link-btn";
 import SectionHeader from "@/components/ui/section-header";
-import { ArrowUpRight, ScanEye, BarChart2, Wallet, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight,
+  ScanEye,
+  BarChart2,
+  Wallet,
+  ShieldCheck,
+} from "lucide-react";
 const FeaturesSection = () => {
   const data = {
-      features: [
+    features: [
       {
         icon: ScanEye,
         label: "Tracking",
@@ -48,7 +54,10 @@ const FeaturesSection = () => {
   };
 
   return (
-    <section id="features" className="h-full px-5 md:px-12 md:py-26 py-16 mx-auto max-w-5xl flex flex-col justify-between items-center gap-10 md:gap-20">
+    <section
+      id="features"
+      className="h-full px-5 md:px-12 md:py-26 py-16 mx-auto max-w-5xl flex flex-col justify-between items-center gap-10 md:gap-20"
+    >
       {/* <div className="text-center">
         <p className="text-300 md:text-400 font-semibold uppercase text-gray-900">Features</p>
         <h2 className="text-800 md:text-1000 font-medium text-gray-900">What makes CashFlow work</h2>
@@ -63,21 +72,24 @@ const FeaturesSection = () => {
         {data.features.map((feature) => {
           const Icon = feature.icon as React.ElementType;
           return (
-          <div key={feature.title} >
-            <Card variant="feature">
-              <CardIcon>{Icon ? <Icon className="w-12 h-12" /> : null}</CardIcon>
-              <CardLabel>{feature.label}</CardLabel>
-              <CardTitle>{feature.title}</CardTitle>
-              <CardDescription>{feature.description}</CardDescription>
-              <CardAction>
-                <LinkBtn href="#">
-                  Explore more
-                  <ArrowUpRight className="w-4 h-4" />
-                </LinkBtn>
-              </CardAction>
-            </Card>
-          </div>
-        )})}
+            <div key={feature.title}>
+              <Card variant="feature">
+                <CardIcon>
+                  {Icon ? <Icon className="w-12 h-12" /> : null}
+                </CardIcon>
+                <CardLabel>{feature.label}</CardLabel>
+                <CardTitle>{feature.title}</CardTitle>
+                <CardDescription>{feature.description}</CardDescription>
+                <CardAction>
+                  <LinkBtn href="#">
+                    Explore more
+                    <ArrowUpRight className="w-4 h-4" />
+                  </LinkBtn>
+                </CardAction>
+              </Card>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

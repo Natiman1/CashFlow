@@ -52,7 +52,5 @@ export const createAuth = ({
         maxAge: 5 * 60, // Cache duration in seconds (5 minutes)
       },
     },
-
-    
   });
 };

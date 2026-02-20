@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const isDemo = session?.user.email === "demo@cashflow.app";
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-background  ">
+      <div className="flex h-screen bg-background">
         {/* Sidebar */}
         <Sidebar />
 

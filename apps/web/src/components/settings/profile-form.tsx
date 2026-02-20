@@ -22,7 +22,7 @@ export function ProfileForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
+
     if (session?.user.email === "demo@cashflow.app") {
       toast.error("Demo account is read-only");
       return;

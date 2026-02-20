@@ -26,10 +26,10 @@ export default function BudgetsClient({
 
   const { data: session } = useSession();
   const handleDelete = async () => {
-      if (session?.user.email === "demo@cashflow.app") {
-          toast.error("Demo account is read-only");
-          return;
-        }
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
     try {
       const budgets = initialBudgets.map((budget) => budget.budgetId);
       await deleteBudget(budgets[0]);

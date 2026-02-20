@@ -29,9 +29,7 @@ const TableFilters = ({ table, categories }: Props) => {
             .getColumn("category")
             ?.setFilterValue(value === "all" ? undefined : value)
         }
-        
       >
-        
         <SelectTrigger className="md:w-45 w-32">
           <SelectValue placeholder="Category" />
         </SelectTrigger>
@@ -51,7 +49,6 @@ const TableFilters = ({ table, categories }: Props) => {
             .getColumn("date")
             ?.setFilterValue(date ? format(date, "yyyy-MM") : undefined);
         }}
-        
       />
     </div>
   );

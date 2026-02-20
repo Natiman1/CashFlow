@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -43,7 +41,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggle = () => setIsOpen(prev => !prev);
+  const toggle = () => setIsOpen((prev) => !prev);
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 

@@ -1,9 +1,6 @@
 import Papa from "papaparse";
 
-export function exportToCSV<T>(
-  rows: T[],
-  filename: string
-) {
+export function exportToCSV<T>(rows: T[], filename: string) {
   const csv = Papa.unparse(rows);
 
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });

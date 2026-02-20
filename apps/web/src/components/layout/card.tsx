@@ -23,11 +23,12 @@ const cardVariants = cva(
       variant: "feature",
       elevation: "flat",
     },
-  }
+  },
 );
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {}
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -37,7 +38,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       className={cn(cardVariants({ variant, elevation }), className)}
       {...props}
     />
-  )
+  ),
 );
 
 Card.displayName = "Card";
@@ -66,11 +67,11 @@ export const CardTitle = ({ children }: { children: React.ReactNode }) => (
   <h3 className="mt-2 text-lg font-semibold">{children}</h3>
 );
 
-export const CardDescription = ({ children }: { children: React.ReactNode }) => (
-  <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-    {children}
-  </p>
-);
+export const CardDescription = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => <p className="mt-2 text-sm text-gray-600 leading-relaxed">{children}</p>;
 
 export const CardAction = ({ children }: { children: React.ReactNode }) => (
   <div className="mt-4 text-sm font-medium text-primary-500 hover:underline cursor-pointer">

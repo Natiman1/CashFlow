@@ -29,9 +29,9 @@ export async function registerAction(data: {
 export async function loginAction(data: { email: string; password: string }) {
   try {
     const headerStore = await headers();
-    const {email,password} = data;
+    const { email, password } = data;
     await auth.api.signInEmail({
-      body: {email,password},
+      body: { email, password },
       headers: headerStore,
     });
 

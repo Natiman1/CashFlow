@@ -37,8 +37,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 text-center text-xs text-gray-500">
-          © {new Date().getFullYear()} FinanceTracker. All rights reserved.
+        <div className="mt-10 text-center text-xs text-gray-300">
+          © {new Date().getFullYear()} CashFlow. All rights reserved.
         </div>
       </div>
     </footer>

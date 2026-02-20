@@ -3,6 +3,7 @@ import LinkBtn from "@/components/ui/link-btn";
 import SectionHeader from "@/components/ui/section-header";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const cta = () => {
   return (
@@ -13,14 +14,21 @@ const cta = () => {
           description="Get started with our personal finance tracker today."
         />
         <div className="flex justify-start gap-4">
-          <Button size="sm">Get started</Button>
+          <Link href="/register">
+            <Button size="sm">Get started</Button>
+          </Link>
           <LinkBtn href="#">
             Explore
             <ArrowUpRight className="w-4 h-4" />
           </LinkBtn>
         </div>
       </div>
-      <Image src="/Desktop-3.png" alt="Call to action image" width={800} height={400} />
+      <Image
+        src="/Desktop-3.png"
+        alt="Call to action image"
+        width={800}
+        height={400}
+      />
     </section>
   );
 };

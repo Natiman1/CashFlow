@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/login-form"
-import { authIsNotRequired } from "@/lib/auth-utils"
+import { LoginForm } from "@/components/login-form";
+import { authIsNotRequired } from "@/lib/auth-utils";
 
 export default async function Page() {
   await authIsNotRequired();
@@ -9,5 +9,5 @@ export default async function Page() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }
