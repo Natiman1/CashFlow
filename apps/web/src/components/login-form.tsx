@@ -69,19 +69,17 @@ export function LoginForm({
       const result = await signIn.social({
         provider: "google",
         callbackURL: "/dashboard",
-
       });
       if (result?.error) {
         toast.error("Google sign-in failed");
       }
-      toast.success("Login successful");
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("An unexpected error occurred during Google sign-in");
     } finally {
       setIsLoading(false);
+      toast.success("Login successful");
     }
-    
   };
 
   return (
@@ -142,6 +140,20 @@ export function LoginForm({
               >
                 Login with Google
               </Button>
+              <Button
+                variant="outline"
+                type="button"
+                onClick={async () => {
+                  await signIn.email({
+                    email: "demo@cashflow.app",
+                    password: "DemoPassword123!",
+                  });
+                  toast.success("Logged in as demo user");
+                  router.push("/dashboard");
+                }}
+              >
+                Try Demo Account
+              </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
@@ -154,4 +166,4 @@ export function LoginForm({
       </Card>
     </div>
   );
-  }
+}

@@ -21,6 +21,7 @@ import {
 import { useEffect, useState, useCallback, startTransition } from "react";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 
 interface Notification {
   id: string;
@@ -75,11 +76,19 @@ export default function Topbar() {
   const unreadCount = notificationList.filter((n) => !n.read).length;
 
   const handleMarkAsRead = async (id: string) => {
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
     await markNotificationAsRead(id);
     await fetchNotifications();
   };
 
   const handleDelete = async (id: string) => {
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
     await deleteNotification(id);
     await fetchNotifications();
   };
@@ -159,7 +168,7 @@ export default function Topbar() {
                           e.stopPropagation();
                           handleDelete(n.id);
                         }}
-                        className="text-red-500 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-50 dark:hover:bg-red-950/30 rounded"
+                        className="text-red-500 cursor-pointer lg:opacity-0 lg:group-hover:opacity-100 lg:transition-opacity p-1 lg:hover:bg-red-50 lg:dark:hover:bg-red-950/30 rounded"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -196,7 +205,7 @@ export default function Topbar() {
               onClick={async () => {
                 const result = await signOut();
                 if (result.data) {
-                  router.push("/login");
+                  router.push("/");
                   router.refresh();
                 } else {
                   alert("Error signing out");

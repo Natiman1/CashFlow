@@ -16,6 +16,7 @@ import { SelectValue } from "@radix-ui/react-select";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
 import { upsertBudget } from "@/actions/budgets";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
 
 type Props = {
   categories: { id: string; name: string; type: string }[];
@@ -28,8 +29,13 @@ const AddBudgetLimit = ({ categories, onSuccess }: Props) => {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { data: session } = useSession();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+      if (session?.user.email === "demo@cashflow.app") {
+          toast.error("Demo account is read-only");
+          return;
+        }
     if (!categoryId || limit <= 0) return;
 
     setIsSubmitting(true);

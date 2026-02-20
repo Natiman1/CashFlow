@@ -24,7 +24,6 @@ export const createAuth = ({
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
-      autoSignIn: false,
     },
 
     socialProviders: {
@@ -43,7 +42,6 @@ export const createAuth = ({
         });
       },
       sendOnSignUp: true,
-      sendOnSignIn: true,
     },
 
     session: {

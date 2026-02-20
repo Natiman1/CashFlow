@@ -38,3 +38,7 @@ export const getUser = cache(async () => {
 
   return session.user;
 });
+
+export function isDemoUser(user: { email: string }) {
+  return user.email === "demo@cashflow.app";
+}

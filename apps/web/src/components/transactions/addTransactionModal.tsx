@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { addTransaction } from "@/actions/transactions";
 import { getUserCategories } from "@/actions/categories";
 import { useEffect } from "react";
+import { useSession } from "@/lib/auth-client";
 
 type AddTransactionModalProps = {
   text: string;
@@ -41,7 +42,7 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     [],
   );
-
+const { data: session } = useSession();
   useEffect(() => {
     if (open) {
       getUserCategories().then((res) => setCategories(res));
@@ -50,6 +51,11 @@ const AddTransactionModal = ({ text }: AddTransactionModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
 
     if (!categoryId) {
       toast.error("Please select a category");

@@ -1,7 +1,7 @@
 "use server";
 
 import { db, transactions, categories } from "@/lib/db";
-import { getUser } from "@/lib/auth-utils";
+import { getUser, isDemoUser } from "@/lib/auth-utils";
 import { transactionSchema } from "@repo/types";
 import { eq, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
@@ -9,12 +9,17 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { checkBudgetAlerts } from "@/lib/notifications/budget-alert";
 
+
+
 function normalizeAmount(amount: number, type: "income" | "expense") {
   return type === "expense" ? -Math.abs(amount) : Math.abs(amount);
 }
 
 export async function addTransaction(data: z.infer<typeof transactionSchema>) {
   const user = await getUser();
+   if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only") 
+  }
 
   const parsed = transactionSchema.safeParse(data);
   if (!parsed.success) {
@@ -77,6 +82,10 @@ export async function getUserTransactions() {
 }
 
 export async function deleteTransaction(id: string) {
+  const user = await getUser();
+   if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only")
+  }
   try {
     await db.delete(transactions).where(eq(transactions.id, id));
     revalidatePath("/dashboard/transactions");
