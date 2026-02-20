@@ -54,8 +54,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     resolver: zodResolver(registerSchema),
   });
 
-
-
   async function onSubmit(data: RegisterFormValues) {
     setIsLoading(true);
     setFormError(null);
@@ -82,15 +80,14 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       });
       if (result?.error) {
         toast.error("Google sign-in failed");
-      }  
-      toast.success("Login successful");
+      }
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("An unexpected error occurred during Google sign-in");
     } finally {
       setIsLoading(false);
+      toast.success("Login successful");
     }
-  
   };
 
   return (
@@ -173,8 +170,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   {" "}
                   {isLoading ? "Creating account..." : "Create account"}
                 </Button>
-                <Button variant="outline" type="button" onClick={handleGoogleSignIn}>
-                   Sign up with Google
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                >
+                  Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account? <Link href="/login">Sign in</Link>

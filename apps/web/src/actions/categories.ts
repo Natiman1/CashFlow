@@ -3,12 +3,16 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db, categories, defaultCategories } from "@/lib/db";
-import { getUser } from "@/lib/auth-utils";
+import { getUser, isDemoUser } from "@/lib/auth-utils";
 import { categorySchema } from "@repo/types";
 import { randomUUID } from "crypto";
 
 export async function createCategory(data: unknown) {
-  const user = await getUser();
+   const user = await getUser();
+   if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only")
+  }
+  
   const parsed = categorySchema.safeParse(data);
 
   if (!parsed.success) {
@@ -61,6 +65,10 @@ export async function getUserCategories() {
 }
 
 export async function deleteCategory(id: string) {
+   const user = await getUser();
+   if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only")
+  }
   try {
     await db.delete(categories).where(eq(categories.id, id));
     revalidatePath("/dashboard/categories");

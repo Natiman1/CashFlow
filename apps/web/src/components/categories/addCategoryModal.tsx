@@ -7,16 +7,21 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { createCategory } from '@/actions/categories'
+import { toast } from 'sonner'
+import { useSession } from '@/lib/auth-client'
 
 const AddCategoryModal = () => {
-
-
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const [type, setType] = useState("");
 
+    const {data: session} = useSession();
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+         if (session?.user.email === "demo@cashflow.app") {
+              toast.error("Demo account is read-only");
+              return;
+            }
         createCategory({ name, type });
         setOpen(false);
         setName("");

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { type BudgetWithUsage } from "@repo/types";
 import { upsertBudget } from "@/actions/budgets";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
 
 type Props = {
   budget: BudgetWithUsage;
@@ -21,8 +22,14 @@ export default function EditBudgetModal({ budget, onClose, onSuccess }: Props) {
   const [limit, setLimit] = useState(budget.limit);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { data: session } = useSession();
   async function handleSave() {
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
     setIsSubmitting(true);
+
     try {
       await upsertBudget({
         id: budget.budgetId,

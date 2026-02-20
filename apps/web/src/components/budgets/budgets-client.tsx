@@ -7,6 +7,7 @@ import EditBudgetModal from "@/components/budgets/editBudgetModal";
 import AddBudgetLimit from "@/components/budgets/addBudgetLimit";
 import { deleteBudget } from "@/actions/budgets";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
 
 type Props = {
   initialBudgets: BudgetWithUsage[];
@@ -23,7 +24,12 @@ export default function BudgetsClient({
     null,
   );
 
+  const { data: session } = useSession();
   const handleDelete = async () => {
+      if (session?.user.email === "demo@cashflow.app") {
+          toast.error("Demo account is read-only");
+          return;
+        }
     try {
       const budgets = initialBudgets.map((budget) => budget.budgetId);
       await deleteBudget(budgets[0]);
@@ -35,7 +41,7 @@ export default function BudgetsClient({
   };
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">Budgets</h1>

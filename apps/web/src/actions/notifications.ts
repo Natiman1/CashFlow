@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { notifications } from "@/lib/db";
-import { getUser } from "@/lib/auth-utils";
+import { getUser, isDemoUser } from "@/lib/auth-utils";
 import { eq, desc, and } from "drizzle-orm";
 
 export async function getNotifications() {
@@ -16,6 +16,10 @@ export async function getNotifications() {
 }
 
 export async function markNotificationAsRead(id: string) {
+  const user = await getUser();
+  if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only");
+  }
   await db
     .update(notifications)
     .set({ read: true })
@@ -24,7 +28,9 @@ export async function markNotificationAsRead(id: string) {
 
 export async function markAllNotificationsAsRead() {
   const user = await getUser();
-
+  if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only");
+  }
   await db
     .update(notifications)
     .set({ read: true })
@@ -33,6 +39,9 @@ export async function markAllNotificationsAsRead() {
 
 export async function deleteNotification(id: string) {
   const user = await getUser();
+  if (isDemoUser(user)) {
+    throw new Error("Demo account is read-only");
+  }
 
   await db
     .delete(notifications)

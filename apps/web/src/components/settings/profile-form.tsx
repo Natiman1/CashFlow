@@ -22,6 +22,12 @@ export function ProfileForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    
+    if (session?.user.email === "demo@cashflow.app") {
+      toast.error("Demo account is read-only");
+      return;
+    }
+
     setLoading(true);
 
     const formData = new FormData(event.currentTarget);
@@ -51,6 +57,7 @@ export function ProfileForm() {
               id="name"
               name="name"
               defaultValue={session?.user?.name || ""}
+              disabled={session?.user.email === "demo@cashflow.app"}
               placeholder="Your name"
               required
             />

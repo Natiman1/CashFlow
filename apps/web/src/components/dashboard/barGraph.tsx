@@ -44,8 +44,8 @@ const BarGraph = ({
         }}
         margin={{
           top: 5,
-          right: 10,
-          left: -20,
+          right: 5,
+          left: -10,
           bottom: 0,
         }}
       >
@@ -53,13 +53,13 @@ const BarGraph = ({
           dataKey="name"
           axisLine={false}
           tickLine={false}
-          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+          tick={{ fontSize: 16, fill: "hsl(var(--muted-foreground))" }}
           dy={10}
         />
         <YAxis
           axisLine={false}
           tickLine={false}
-          tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+          tick={{ fontSize: 14, fill: "hsl(var(--muted-foreground))" }}
           tickFormatter={(value) =>
             formatCurrency(value, currency).split(".")[0]
           }
@@ -80,13 +80,13 @@ const BarGraph = ({
           dataKey="income"
           fill="#10b981"
           radius={[4, 4, 0, 0]}
-          barSize={20}
+          barSize={25}
         />
         <Bar
           dataKey="expense"
           fill="#f59e0b"
           radius={[4, 4, 0, 0]}
-          barSize={20}
+          barSize={25}
         />
       </BarChart>
     </div>

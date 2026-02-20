@@ -8,6 +8,9 @@ import { revalidatePath } from "next/cache";
 
 export async function updateProfile(data: { name: string }) {
   const session = await getSession();
+  if (session?.user.email === "demo@cashflow.app") {
+    return { error: "Demo account is read-only" };
+  }
   if (!session) return { error: "Unauthorized" };
 
   try {

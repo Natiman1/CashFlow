@@ -31,7 +31,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
         </div>
       </div>
 
-      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="lg:opacity-0 lg:group-hover:opacity-100 lg:transition-opacity">
         <DeleteCategory id={category.id} />
       </div>
     </div>

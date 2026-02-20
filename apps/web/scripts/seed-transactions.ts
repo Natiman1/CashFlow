@@ -4,7 +4,7 @@ import { transactions, categories } from "../src/lib/db";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
-const USER_ID = "WWadReLdkwTUuO15IoOepBKQNFMKFY11";
+const USER_ID = "demo-user-id";
 
 async function seed() {
   console.log(`Fetching categories for user ${USER_ID}...`);
@@ -12,7 +12,6 @@ async function seed() {
     .select()
     .from(categories)
     .where(eq(categories.userId, USER_ID));
-
   if (userCategories.length === 0) {
     console.error(
       "No categories found for this user. Please add categories first.",
