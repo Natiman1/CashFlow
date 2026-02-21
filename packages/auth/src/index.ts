@@ -4,14 +4,14 @@ import * as schema from "@repo/db";
 
 export type AuthOptions = {
   db: any;
-  sendEmail: (data: { email: string; url: string }) => Promise<void>;
+  // sendEmail: (data: { email: string; url: string }) => Promise<void>;
   googleClientId?: string;
   googleClientSecret?: string;
 };
 
 export const createAuth = ({
   db,
-  sendEmail,
+  // sendEmail,
   googleClientId,
   googleClientSecret,
 }: AuthOptions) => {
@@ -23,7 +23,6 @@ export const createAuth = ({
 
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: true,
     },
 
     socialProviders: {
@@ -34,15 +33,17 @@ export const createAuth = ({
       },
     },
 
-    emailVerification: {
-      sendVerificationEmail: async ({ user, url }) => {
-        await sendEmail({
-          email: user.email,
-          url,
-        });
-      },
-      sendOnSignUp: true,
-    },
+    // Uncomment the following block to enable email verification
+
+    // emailVerification: {
+    //   sendVerificationEmail: async ({ user, url }) => {
+    //     await sendEmail({
+    //       email: user.email,
+    //       url,
+    //     });
+    //   },
+    //   sendOnSignUp: true,
+    // },
 
     session: {
       expiresIn: 60 * 60 * 24 * 3, // 3 days

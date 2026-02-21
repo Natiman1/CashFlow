@@ -23,8 +23,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { registerAction } from "@/actions/auth";
-import { signIn } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 
 const registerSchema = z
   .object({
@@ -58,17 +57,24 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     setIsLoading(true);
     setFormError(null);
 
-    const res = await registerAction(data);
+    const { error } = await signUp.email({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      callbackURL: "/dashboard",
+    });
 
-    if (res?.error) {
-      setFormError(res.error);
+    if (error) {
+      setFormError(error.message || "Signup failed");
+      setIsLoading(false);
       return;
     }
 
-    router.push("/verify-email");
     toast.success("Account created successfully", {
       description: "You are now logged in",
     });
+    router.push("/dashboard");
+    router.refresh();
   }
 
   const handleGoogleSignIn = async () => {

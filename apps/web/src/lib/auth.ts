@@ -1,11 +1,11 @@
 import { createAuth } from "@repo/auth";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+// import { sendEmail } from "@/lib/email";
 import { headers } from "next/headers";
 
 export const auth = createAuth({
   db,
-  sendEmail,
+  // sendEmail,
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 });

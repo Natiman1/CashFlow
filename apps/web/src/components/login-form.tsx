@@ -21,7 +21,6 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { loginAction } from "@/actions/auth";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -49,18 +48,23 @@ export function LoginForm({
     setIsLoading(true);
     setFormError(null);
 
-    const result = await loginAction(data);
+    const { error } = await signIn.email({
+      email: data.email,
+      password: data.password,
+      callbackURL: "/dashboard",
+    });
 
-    if (result.error) {
-      setFormError(result.error);
+    if (error) {
+      setFormError(error.message || "Invalid credentials");
+      setIsLoading(false);
+      return;
     }
 
-    if (result.success) {
-      router.push("/dashboard");
-      toast.success("Login successful", {
-        description: "You are now logged in",
-      });
-    }
+    toast.success("Login successful", {
+      description: "You are now logged in",
+    });
+    router.push("/dashboard");
+    router.refresh();
   }
 
   const handleGoogleSignIn = async () => {
