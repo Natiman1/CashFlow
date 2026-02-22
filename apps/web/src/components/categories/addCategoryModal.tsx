@@ -80,9 +80,9 @@ const AddCategoryModal = () => {
               </Select>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button className="mr-0" variant="outline">Cancel</Button>
             </DialogClose>
             <Button type="submit">Add Category</Button>
           </DialogFooter>
