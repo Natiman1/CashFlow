@@ -6,3 +6,5 @@ ignoredBuiltDependencies:
   - esbuild
   - sharp
   - unrs-resolver
+
+nodeLinker: hoisted
