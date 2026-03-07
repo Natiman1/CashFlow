@@ -9,8 +9,6 @@
     "build:web": "pnpm --filter web build"
   },
   "devDependencies": {
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
     "drizzle-kit": "^0.31.8",
     "typescript": "^5.9.3"
   },
@@ -23,5 +21,11 @@
     "postgres": "^3.4.8",
     "react-hook-form": "^7.71.1",
     "zod": "^4.3.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.1.0",
+      "react-dom": "19.1.0"
+    }
   }
 }
