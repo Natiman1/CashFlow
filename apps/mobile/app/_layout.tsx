@@ -1,24 +1,23 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Redirect, Stack, useSegments } from "expo-router";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+const IS_AUTH = false;
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const segments = useSegments();
+  const inAuthGroup = segments[0] === "(auth)";
+
+  if (!IS_AUTH && !inAuthGroup) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  if (IS_AUTH && inAuthGroup) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(auth)" />
+    </Stack>
   );
 }

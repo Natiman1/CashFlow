@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text>Home</Text>
+        <Text>Settings</Text>
       </View>
     </SafeAreaView>
   );
