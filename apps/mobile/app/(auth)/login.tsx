@@ -32,12 +32,12 @@ export default function LoginScreen() {
             secureTextEntry
             style={styles.input}
           />
-          <TouchableOpacity style={styles.button} onPress={() => router.push("/")}>
+          <TouchableOpacity style={styles.button} onPress={() => router.replace("/(tabs)")}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.linkButton}>
-            <Text>
-              Don&apos;t have an account? <Text>Sign Up</Text>
+          <TouchableOpacity style={styles.linkButton} onPress={() => router.push("/(auth)/signup")}>
+            <Text style={styles.linkButtonText}>
+              Don&apos;t have an account? <Text style={styles.linkButtonTextBold}>Sign Up</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   button:{
     backgroundColor: "#000",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 100,
     alignItems: "center",
   },
   buttonText:{
@@ -93,5 +93,13 @@ const styles = StyleSheet.create({
   linkButton:{
     alignItems: "center",
     marginTop: 16,
+  },
+  linkButtonText:{
+    color: "#666",
+    fontSize: 16,
+  },
+  linkButtonTextBold:{
+    fontWeight: "bold",
+    color: "#000",
   },
 });
