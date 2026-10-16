@@ -71,8 +71,8 @@ const BarGraph = ({
             borderRadius: "8px",
             fontSize: "12px",
           }}
-          formatter={(value: number | undefined) => [
-            formatCurrency(value ?? 0, currency),
+          formatter={(value) => [
+            formatCurrency(Number(value) || 0, currency),
             "",
           ]}
         />
@@ -94,3 +94,4 @@ const BarGraph = ({
 };
 
 export default BarGraph;
+
