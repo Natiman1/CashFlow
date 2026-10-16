@@ -1,11 +1,11 @@
 "use server";
-import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db, categories, defaultCategories } from "@/lib/db";
 import { getUser, isDemoUser } from "@/lib/auth-utils";
 import { categorySchema } from "@repo/types";
 import { randomUUID } from "crypto";
+import { eq } from "drizzle-orm";
 
 export async function createCategory(data: unknown) {
   const user = await getUser();
@@ -31,10 +31,9 @@ export async function createCategory(data: unknown) {
 export async function getUserCategories() {
   const user = await getUser();
 
-  const userCategories = await db
-    .select()
-    .from(categories)
-    .where(eq(categories.userId, user.id));
+  const userCategories = await db.query.categories.findMany({
+    where: (category, { eq }) => eq(category.userId, user.id),
+  });
 
   // Only seed if zero categories exist for this user
   if (userCategories.length === 0) {
@@ -52,10 +51,9 @@ export async function getUserCategories() {
       return seededCategories;
     } catch (error) {
       // If a race occurred, just fetch again
-      return await db
-        .select()
-        .from(categories)
-        .where(eq(categories.userId, user.id));
+      return await db.query.categories.findMany({
+        where: (category, { eq }) => eq(category.userId, user.id),
+      });
 
       throw error;
     }
@@ -70,7 +68,8 @@ export async function deleteCategory(id: string) {
     throw new Error("Demo account is read-only");
   }
   try {
-    await db.delete(categories).where(eq(categories.id, id));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await db.delete(categories).where((eq as any)(categories.id, id));
     revalidatePath("/dashboard/categories");
   } catch (error) {
     console.error("Delete category error:", error);
