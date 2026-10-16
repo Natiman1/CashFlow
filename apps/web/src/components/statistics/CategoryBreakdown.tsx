@@ -46,7 +46,7 @@ export function CategoryBreakdown({
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number | string | undefined) => [
+                  formatter={(value) => [
                     formatCurrency(Number(value) || 0, currency),
                     "Amount",
                   ]}
@@ -72,3 +72,4 @@ export function CategoryBreakdown({
     </Card>
   );
 }
+
