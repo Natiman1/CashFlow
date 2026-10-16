@@ -49,7 +49,7 @@ export function DailySpendingChart({
                   }
                 />
                 <Tooltip
-                  formatter={(value: number | string | undefined) => [
+                  formatter={(value) => [
                     formatCurrency(Number(value) || 0, currency),
                     "Amount",
                   ]}
@@ -82,3 +82,4 @@ function maxBarSize(dataLength: number) {
   if (dataLength > 10) return 20;
   return 40;
 }
+

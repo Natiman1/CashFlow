@@ -62,7 +62,7 @@ export function TrendAnalysisChart({
                   }
                 />
                 <Tooltip
-                  formatter={(value: number | string | undefined) => [
+                  formatter={(value) => [
                     formatCurrency(Number(value) || 0, currency),
                     "",
                   ]}
@@ -100,3 +100,4 @@ export function TrendAnalysisChart({
     </Card>
   );
 }
+
