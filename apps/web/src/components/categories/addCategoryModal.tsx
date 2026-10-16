@@ -37,7 +37,7 @@ const AddCategoryModal = () => {
       toast.error("Demo account is read-only");
       return;
     }
-    createCategory({ name, type });
+    createCategory({ name, type, color: "#6366F1" });
     setOpen(false);
     setName("");
     setType("");
